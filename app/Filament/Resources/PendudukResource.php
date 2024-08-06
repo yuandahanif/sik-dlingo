@@ -23,7 +23,10 @@ class PendudukResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama')->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('nik'),
             ]);
     }
 
