@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kartu_keluarga', function (Blueprint $table) {
-            $table->uuid('id')->nullable()->default(null);
-            $table->string('image');
-            $table->string('no_kk', 16);
-            $table->enum('status_ekonomi',['mampu','tidak mampu']);
-            $table->timestamps();
+        Schema::table('rt', function (Blueprint $table) {
+            $table->foreignUuid('ketua_id')->references("id")->on("penduduk")->onDelete('cascade');
         });
     }
 
@@ -25,6 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kartu_keluarga');
+        Schema::table('rt', function (Blueprint $table) {
+            $table->dropForeign(['ketua_id']);
+            $table->dropColumn('ketua_id');
+        });
     }
 };
