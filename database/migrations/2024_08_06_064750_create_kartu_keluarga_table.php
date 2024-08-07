@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kartu_keluarga', function (Blueprint $table) {
-            $table->uuid('id')->nullable()->default(null);
+            $table->id();
             $table->string('image');
             $table->string('no_kk', 16);
             $table->enum('status_ekonomi',['mampu','tidak mampu']);

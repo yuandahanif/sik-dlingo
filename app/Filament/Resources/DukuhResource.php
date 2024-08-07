@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RwResource\Pages;
-use App\Filament\Resources\RwResource\RelationManagers;
-use App\Models\Rw;
+use App\Filament\Resources\DukuhResource\Pages;
+use App\Filament\Resources\DukuhResource\RelationManagers;
+use App\Models\Dukuh;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RwResource extends Resource
+class DukuhResource extends Resource
 {
-    protected static ?string $model = Rw::class;
+    protected static ?string $model = Dukuh::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -56,9 +56,9 @@ class RwResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRws::route('/'),
-            'create' => Pages\CreateRw::route('/create'),
-            'edit' => Pages\EditRw::route('/{record}/edit'),
+            'index' => Pages\ListDukuhs::route('/'),
+            'create' => Pages\CreateDukuh::route('/create'),
+            'edit' => Pages\EditDukuh::route('/{record}/edit'),
         ];
     }
 }

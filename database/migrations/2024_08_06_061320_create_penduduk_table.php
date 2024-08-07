@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('penduduk', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('nama');
             $table->string('nik')->unique();
-            $table->foreignUuid('rw_id')->references('id')->on('rw')->onDelete('cascade');
-            $table->foreignUuid('rt_id')->references('id')->on('rt')->onDelete('cascade');
+            $table->foreignId('rt_id')->references('id')->on('rt')->onDelete('cascade');
             $table->enum('gender',['Perempuan','Laki-laki']);
             $table->string('tmp_lahir');
             $table->date('tgl_lahir');

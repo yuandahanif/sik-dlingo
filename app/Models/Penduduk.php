@@ -20,5 +20,15 @@ class Penduduk extends Model
         return $this->belongsTo(KartuKeluarga::class);
     }
 
+    public function RW(): BelongsTo
+    {
+        return $this->belongsTo(RW::class);
+    }
+
+    public function RT(): BelongsTo
+    {
+        return $this->belongsTo(RT::class);
+    }
+
     protected $fillable = ['nama', 'nik', 'rw_id', 'rt_id', 'gender', 'tmp_lahir', 'tgl_lahir', 'agama', 'alamat', 'status_pernikahan', 'status_keluarga', 'pekerjaan'];
 }

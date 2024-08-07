@@ -23,8 +23,19 @@ class RtResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama RT')
+                    ->required(),
+                Forms\Components\TextInput::make('rt')
+                    ->numeric()
+                    ->label('Nomor RT')
+                    ->required(),
+                Forms\Components\Select::make('rw_id')
+                    ->relationship(name: 'rw', titleAttribute: 'nama')
+                    ->required(),
+            ])
+            ->statePath('create_rt')
+            ->model($form->getModel());
     }
 
     public static function table(Table $table): Table

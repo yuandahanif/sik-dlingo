@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('rw', function (Blueprint $table) {
-            $table->foreignUuid('ketua_id')->references("id")->on("penduduk")->onDelete('cascade');
+        Schema::create('dukuh', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->foreignId('ketua_id')->references('id')->on('penduduk')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -21,9 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('rw', function (Blueprint $table) {
-            $table->dropForeign(['ketua_id']);
-            $table->dropColumn('ketua_id');
-        });
+        Schema::dropIfExists('dukuh');
     }
 };
