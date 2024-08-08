@@ -6,13 +6,14 @@ use App\Filament\Resources\DukuhResource\Pages;
 use App\Filament\Resources\DukuhResource\RelationManagers;
 use App\Models\Dukuh;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 class DukuhResource extends Resource
 {
     protected static ?string $model = Dukuh::class;
@@ -23,7 +24,14 @@ class DukuhResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nama')
+                    ->label('Nama Dukuh')
+                    ->required()
+                    ->maxLength(255),
+                Select::make('ketua_id')
+                    ->relationship('ketua', 'nama')
+                    ->label('Ketua Dukuh')
+                    ->required(),
             ]);
     }
 

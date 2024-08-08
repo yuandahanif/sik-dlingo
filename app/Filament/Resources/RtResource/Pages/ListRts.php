@@ -10,6 +10,8 @@ class ListRts extends ListRecords
 {
     protected static string $resource = RtResource::class;
 
+    protected static ?string $title = 'RT';
+
     protected function getHeaderActions(): array
     {
         return [

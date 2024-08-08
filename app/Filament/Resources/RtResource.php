@@ -6,6 +6,8 @@ use App\Filament\Resources\RtResource\Pages;
 use App\Filament\Resources\RtResource\RelationManagers;
 use App\Models\Rt;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -17,25 +19,28 @@ class RtResource extends Resource
 {
     protected static ?string $model = Rt::class;
 
+    protected static ?string $navigationLabel = 'RT';
+
     protected static ?string $navigationIcon = 'healthicons-f-village';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                TextInput::make('nama')
                     ->label('Nama RT')
                     ->required(),
-                Forms\Components\TextInput::make('rt')
+                TextInput::make('rt')
                     ->numeric()
                     ->label('Nomor RT')
                     ->required(),
-                Forms\Components\Select::make('dukuh')
+                Select::make('dukuh')
                     ->relationship(name: 'dukuh', titleAttribute: 'name')
                     ->required(),
             ])
             ->statePath('data')
-            ->model($form->getModel());
+            ->model($form->getModel())
+            ->columns(1);
     }
 
     public static function table(Table $table): Table
