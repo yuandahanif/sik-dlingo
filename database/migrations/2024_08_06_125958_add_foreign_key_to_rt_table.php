@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('rt', function (Blueprint $table) {
             $table->foreignId('ketua_id')->nullable()->references("id")->on("penduduk")->nullOnDelete();
-            $table->foreignId('dukuh_id')->nullable()->references('id')->on('dukuh')->onDelete('cascade')->nullOnDelete();
+            $table->foreignId('dusun_id')->nullable()->references('id')->on('dusun')->onDelete('cascade')->nullOnDelete();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
         Schema::table('rt', function (Blueprint $table) {
             $table->dropForeign(['ketua_id']);
             $table->dropColumn('ketua_id');
-            $table->dropForeign(['dukuh_id']);
-            $table->dropColumn('dukuh_id');
+            $table->dropForeign(['dusun_id']);
+            $table->dropColumn('dusun_id');
         });
     }
 };

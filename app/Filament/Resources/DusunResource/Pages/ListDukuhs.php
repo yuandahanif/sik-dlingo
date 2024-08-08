@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources\DukuhResource\Pages;
 
-use App\Filament\Resources\DukuhResource;
+use App\Filament\Resources\DusunResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListDukuhs extends ListRecords
+class ListDusun extends ListRecords
 {
-    protected static string $resource = DukuhResource::class;
+    protected static string $resource = DusunResource::class;
 
     protected function getHeaderActions(): array
     {

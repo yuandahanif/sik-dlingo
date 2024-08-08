@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Filters\Filter;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables\Enums\FiltersLayout;
 
 class PendudukResource extends Resource
 {
@@ -40,13 +42,11 @@ class PendudukResource extends Resource
         $ageFilter =
             Filter::make('created_at')
             ->form([
-
                 Fieldset::make('Batas Usia')
                     ->schema([
                         DatePicker::make('lowest_age')->label('Batas Bawah')->prefix('Batas Bawah'),
                         DatePicker::make('highest_age')->label('Batas Atas')->prefix('Batas Atas'),
-                    ])->columns(1),
-
+                    ])->columns(2),
             ])
             ->query(function (Builder $query, array $data): Builder {
                 return $query
@@ -70,7 +70,7 @@ class PendudukResource extends Resource
             ])
             ->filters([
                 $ageFilter,
-            ])
+            ], layout: FiltersLayout::Modal)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -78,7 +78,8 @@ class PendudukResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->filtersFormWidth(MaxWidth::TwoExtraLarge);
     }
 
     public static function getRelations(): array

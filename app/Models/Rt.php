@@ -22,6 +22,6 @@ class Rt extends Model
 
     public function dukuh(): BelongsTo
     {
-        return $this->belongsTo(Dukuh::class);
+        return $this->belongsTo(Dusun::class);
     }
 }

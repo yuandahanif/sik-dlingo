@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DukuhResource\Pages;
 use App\Filament\Resources\DukuhResource\RelationManagers;
-use App\Models\Dukuh;
+use App\Models\Dusun;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,23 +15,26 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-class DukuhResource extends Resource
+class DusunResource extends Resource
 {
-    protected static ?string $model = Dukuh::class;
+    protected static ?string $model = Dusun::class;
 
     protected static ?string $navigationIcon = 'gameicon-village';
+
+    protected static ?string $navigationLabel = 'Dusun';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('nama')
-                    ->label('Nama Dukuh')
+                    ->label('Nama Dusun')
                     ->required()
                     ->maxLength(255),
                 Select::make('ketua_id')
                     ->relationship('ketua', 'nama')
-                    ->label('Ketua Dukuh')
+                    ->label('Ketua Dusun')
                     ->required(),
             ]);
     }
@@ -41,7 +44,7 @@ class DukuhResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nama')->searchable(),
-                TextColumn::make('ketua_id')->label('Ketua Dukuh'),
+                TextColumn::make('ketua_id')->label('Ketua Dusun'),
             ])
             ->filters([
                 //
@@ -66,9 +69,9 @@ class DukuhResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDukuhs::route('/'),
-            'create' => Pages\CreateDukuh::route('/create'),
-            'edit' => Pages\EditDukuh::route('/{record}/edit'),
+            'index' => Pages\ListDusun::route('/'),
+            'create' => Pages\CreateDusun::route('/create'),
+            'edit' => Pages\EditDusun::route('/{record}/edit'),
         ];
     }
 }

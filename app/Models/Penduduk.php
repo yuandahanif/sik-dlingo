@@ -31,7 +31,7 @@ class Penduduk extends Model
 
     public function KetuaDukuh(): HasOne
     {
-        return $this->hasOne(Dukuh::class);
+        return $this->hasOne(Dusun::class);
     }
 
     protected function age(): Attribute

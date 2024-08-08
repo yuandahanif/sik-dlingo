@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Dukuh extends Model
+class Dusun extends Model
 {
     use HasFactory;
 
-    protected $table = 'dukuh';
+    protected $table = 'dusun';
 
     protected $fillable = ['nama', 'ketua_id'];
 
