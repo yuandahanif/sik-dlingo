@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Carbon;
+
 class Penduduk extends Model
 {
     use HasFactory;
@@ -31,5 +34,13 @@ class Penduduk extends Model
         return $this->hasOne(Dukuh::class);
     }
 
-    protected $fillable = ['nama', 'nik', 'rw_id', 'rt_id', 'gender', 'tmp_lahir', 'tgl_lahir', 'agama', 'alamat', 'status_pernikahan', 'status_keluarga', 'pekerjaan'];
+    protected function age(): Attribute
+    {
+        // dd(Carbon::create($this->tanggal_lahir)->diffInYears(now()));
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->tanggal_lahir)->age,
+        );
+    }
+
+    protected $fillable = ['nama', 'nik', 'rt_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'status_pernikahan', 'status_keluarga', 'pekerjaan'];
 }

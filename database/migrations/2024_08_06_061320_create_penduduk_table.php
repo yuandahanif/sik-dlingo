@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nik')->unique();
             $table->foreignId('rt_id')->references('id')->on('rt')->onDelete('cascade');
-            $table->enum('gender',['Perempuan','Laki-laki']);
-            $table->string('tmp_lahir');
-            $table->date('tgl_lahir');
+            $table->enum('jenis_kelamin',['perempuan','laki-laki']);
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
             $table->enum('agama',['islam','katolik','protestan','konghucu','buddha','hindu']);
             $table->longtext('alamat');
-            $table->enum('status_pernikahan',['kawin','belum kawin','cerai']);
-            $table->enum('status_keluarga',['Kepala Rumah Tangga','Isteri','Anak','Lainnya']);
+            $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati']);
             $table->string('pekerjaan');
+            $table->enum('status', ['hidup', 'meninggal', 'pindah']);
             $table->timestamps();
         });
     }
