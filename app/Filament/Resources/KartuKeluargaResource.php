@@ -17,7 +17,7 @@ class KartuKeluargaResource extends Resource
 {
     protected static ?string $model = KartuKeluarga::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'ri-file-paper-line';
 
     public static function form(Form $form): Form
     {

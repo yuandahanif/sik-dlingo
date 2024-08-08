@@ -17,7 +17,7 @@ class DukuhResource extends Resource
 {
     protected static ?string $model = Dukuh::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'gameicon-village';
 
     public static function form(Form $form): Form
     {

@@ -17,7 +17,7 @@ class RtResource extends Resource
 {
     protected static ?string $model = Rt::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'healthicons-f-village';
 
     public static function form(Form $form): Form
     {
@@ -30,11 +30,11 @@ class RtResource extends Resource
                     ->numeric()
                     ->label('Nomor RT')
                     ->required(),
-                Forms\Components\Select::make('rw_id')
-                    ->relationship(name: 'rw', titleAttribute: 'nama')
+                Forms\Components\Select::make('dukuh')
+                    ->relationship(name: 'dukuh', titleAttribute: 'name')
                     ->required(),
             ])
-            ->statePath('create_rt')
+            ->statePath('data')
             ->model($form->getModel());
     }
 
