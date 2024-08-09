@@ -15,11 +15,11 @@ class ListPenduduks extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
-            'active' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', true)),
-            'inactive' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', false)),
+            'Semua' => Tab::make(),
+            'Hidup' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'hidup')),
+            'Meninggal' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'meninggal')),
         ];
     }
 

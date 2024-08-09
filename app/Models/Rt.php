@@ -20,7 +20,7 @@ class Rt extends Model
         return $this->hasMany(Penduduk::class);
     }
 
-    public function dukuh(): BelongsTo
+    public function dusun(): BelongsTo
     {
         return $this->belongsTo(Dusun::class);
     }

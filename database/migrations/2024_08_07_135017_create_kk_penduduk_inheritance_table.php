@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('kk_penduduk_inheritance', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('kk_id')->references('id')->on('kartu_keluarga')->onDelete('no action');
             $table->foreignId('from_id')->references('id')->on('penduduk')->onDelete('cascade');
-            $table->foreignId('to_id')->references('id')->on('kartu_keluarga')->onDelete('cascade');
+            $table->foreignId('to_id')->references('id')->on('penduduk')->onDelete('cascade');
             $table->timestamps();
         });
     }

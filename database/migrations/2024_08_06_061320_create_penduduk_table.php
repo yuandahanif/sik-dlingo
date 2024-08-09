@@ -21,9 +21,10 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->enum('agama',['islam','katolik','protestan','konghucu','buddha','hindu']);
             $table->longtext('alamat');
-            $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati']);
             $table->string('pekerjaan');
-            $table->enum('status', ['hidup', 'meninggal', 'pindah']);
+            $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati']);
+            $table->enum('status_kependudukan', ['menetap', 'pindah', 'datang'])->default('menetap');
+            $table->enum('status', ['hidup', 'meninggal'])->default('hidup');
             $table->timestamps();
         });
     }

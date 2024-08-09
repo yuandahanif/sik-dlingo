@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
 
+use App\Models\Rt;
+use App\Models\Dusun;
+
 class Penduduk extends Model
 {
     use HasFactory;
@@ -26,7 +29,7 @@ class Penduduk extends Model
 
     public function Rt(): BelongsTo
     {
-        return $this->belongsTo(RT::class);
+        return $this->belongsTo(Rt::class);
     }
 
     public function KetuaDukuh(): HasOne
@@ -41,5 +44,5 @@ class Penduduk extends Model
         );
     }
 
-    protected $fillable = ['nama', 'nik', 'rt_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'status_pernikahan', 'status_keluarga', 'pekerjaan'];
+    protected $fillable = ['nama', 'nik', 'rt_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'status_pernikahan', 'pekerjaan'];
 }

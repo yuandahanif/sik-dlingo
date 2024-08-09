@@ -12,7 +12,9 @@ class KartuKeluarga extends Model
 
     protected $table = 'kartu_keluarga';
 
-    public function members(): HasMany
+    protected $fillable = ['nomor_kk', 'alamat', 'status_keluarga'];
+
+    public function family_member(): HasMany
     {
         return $this->hasMany(Penduduk::class);
     }
