@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nik')->unique();
-            $table->foreignId('kartu_keluarga_id')->references('id')->on('kartu_keluarga')->onDelete('cascade');
             $table->foreignId('rt_id')->references('id')->on('rt')->onDelete('cascade');
             $table->enum('jenis_kelamin',['perempuan','laki-laki']);
             $table->string('tempat_lahir');
