@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nik')->unique();
+            $table->foreignId('kartu_keluarga_id')->references('id')->on('kartu_keluarga')->onDelete('cascade');
             $table->foreignId('rt_id')->references('id')->on('rt')->onDelete('cascade');
             $table->enum('jenis_kelamin',['perempuan','laki-laki']);
             $table->string('tempat_lahir');
@@ -22,9 +23,9 @@ return new class extends Migration
             $table->enum('agama',['islam','katolik','protestan','konghucu','buddha','hindu']);
             $table->longtext('alamat');
             $table->string('pekerjaan');
-            $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati']);
-            $table->enum('status_kependudukan', ['menetap', 'pindah', 'datang'])->default('menetap');
+            $table->enum('status_kependudukan', ['pindah', 'datang'])->nullable();
             $table->enum('status', ['hidup', 'meninggal'])->default('hidup');
+            $table->date('tanggal_meninggal')->nullable();
             $table->timestamps();
         });
     }

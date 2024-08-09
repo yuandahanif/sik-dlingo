@@ -13,7 +13,7 @@ class Dusun extends Model
 
     protected $table = 'dusun';
 
-    protected $fillable = ['nama', 'ketua_id'];
+    protected $fillable = ['nama', 'kepala_id'];
 
     public function ketua(): BelongsTo
     {

@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('kartu_keluarga', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('no_kk', 16);
-            $table->enum('status_ekonomi',['mampu','tidak mampu']);
+            $table->string('no_kk', 16)->unique();
+            $table->string('image')->nullable();
+            $table->enum('status_ekonomi',['mampu','tidak mampu'])->default('mampu');
+            $table->enum('status_dalam_keluarga',['ayah','ibu','anak'])->default('anak');
+            $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati'])->default('belum kawin');
             $table->timestamps();
         });
     }

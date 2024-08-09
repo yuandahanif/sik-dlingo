@@ -13,7 +13,7 @@ class Rt extends Model
 
     protected $table = 'rt';
 
-    protected $fillable = ['nama', 'rt', 'rw_id', 'dukuh_id', 'ketua_id'];
+    protected $fillable = ['nama', 'rt', 'rw_id', 'dukuh_id', 'kepala_id'];
 
     public function penduduk(): HasMany
     {
