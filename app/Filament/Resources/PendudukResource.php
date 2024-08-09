@@ -16,9 +16,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Filters\Filter;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Forms\Get;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class PendudukResource extends Resource
 {
@@ -42,21 +46,38 @@ class PendudukResource extends Resource
         $ageFilter =
             Filter::make('created_at')
             ->form([
-                Fieldset::make('Batas Usia')
+                Fieldset::make('Usia')
                     ->schema([
-                        DatePicker::make('lowest_age')->label('Batas Bawah')->prefix('Batas Bawah'),
-                        DatePicker::make('highest_age')->label('Batas Atas')->prefix('Batas Atas'),
+                        TextInput::make('lowest_age')->numeric()->label('Batas Bawah')->prefix('Batas Bawah')->minValue(0)
+                            ->maxValue(
+                                function (Get $get): Int {
+                                    $highest_age = $get('highest_age') ?? 150;
+                                    return $highest_age;
+                                }
+                            )
+                            ->debounce(1000)
+                            ->live(),
+                        TextInput::make('highest_age')->numeric()->label('Batas Atas')->prefix('Batas Atas')->maxValue(150)
+                            ->minValue(
+                                function (Get $get): Int {
+                                    $lowest_age = $get('lowest_age') ?? 0;
+                                    return $lowest_age;
+                                }
+                            )
+                            ->debounce(1000)
+                            ->live(),
+
                     ])->columns(2),
             ])
             ->query(function (Builder $query, array $data): Builder {
                 return $query
                     ->when(
                         $data['lowest_age'],
-                        fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                        fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '<=', Carbon::now()->subYears($date)),
                     )
                     ->when(
                         $data['highest_age'],
-                        fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                        fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '>=', Carbon::now()->subYears($date)),
                     );
             });
 

@@ -36,7 +36,6 @@ class Penduduk extends Model
 
     protected function age(): Attribute
     {
-        // dd(Carbon::create($this->tanggal_lahir)->diffInYears(now()));
         return Attribute::make(
             get: fn () => Carbon::parse($this->tanggal_lahir)->age,
         );
