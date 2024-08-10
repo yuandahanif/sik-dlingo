@@ -6,9 +6,11 @@ use App\Filament\Resources\KartuKeluargaResource\Pages;
 use App\Filament\Resources\KartuKeluargaResource\RelationManagers;
 use App\Models\KartuKeluarga;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,7 +25,9 @@ class KartuKeluargaResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('no_kk')
+                    ->label('Nomer KK')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +35,12 @@ class KartuKeluargaResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('no_kk')->searchable()->label('Nomer KK'),
+                TextColumn::make('anggota_keluarga_count')->counts('anggota_keluarga')->label('Anggota Dlama KK')
+                ->sortable()
+                ->alignCenter(),
+                TextColumn::make('status_ekonomi')->sortable()->label('Status Ekonomi')
+                ->alignCenter(),
             ])
             ->filters([
                 //

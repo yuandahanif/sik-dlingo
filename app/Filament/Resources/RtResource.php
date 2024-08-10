@@ -35,9 +35,18 @@ class RtResource extends Resource
                     ->numeric()
                     ->label('Nomor RT')
                     ->required(),
-                Select::make('dukuh')
-                    ->relationship(name: 'dukuh', titleAttribute: 'name')
-                    ->required(),
+                Select::make('dusun_id')
+                    ->relationship(name: 'dusun', titleAttribute: 'nama', ignoreRecord: true)
+                    ->required()
+                    ->native(false)
+                    ->searchable()
+                    ->preload(),
+                Select::make('kepala_id')
+                    ->relationship(name: 'penduduk', titleAttribute: 'nama', ignoreRecord: true)
+                    ->required()->label('Kepala RT')
+                    ->native(false)
+                    ->searchable()
+                    ->preload(),
             ])
             ->statePath('data')
             ->model($form->getModel())
@@ -50,6 +59,8 @@ class RtResource extends Resource
             ->columns([
                 TextColumn::make('nama')
                     ->label('Nama RT'),
+                TextColumn::make('dusun.nama')
+                    ->label('Dusun'),
                 TextColumn::make('kepala.nama')
                     ->label('Kepala RT'),
             ])

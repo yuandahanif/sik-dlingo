@@ -19,11 +19,13 @@ return new class extends Migration
             $table->enum('jenis_kelamin',['perempuan','laki-laki']);
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
-            $table->enum('agama',['islam','katolik','protestan','konghucu','buddha','hindu']);
             $table->longtext('alamat');
             $table->string('pekerjaan');
             $table->enum('status_kependudukan', ['pindah', 'datang'])->nullable();
             $table->enum('status', ['hidup', 'meninggal'])->default('hidup');
+            $table->enum('status_dalam_keluarga',['suami','istri','anak', 'lainnya'])->default('anak');
+            $table->enum('agama',['islam','katolik','protestan','konghucu','buddha','hindu']);
+            $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati'])->default('belum kawin');
             $table->date('tanggal_meninggal')->nullable();
             $table->timestamps();
         });

@@ -13,7 +13,12 @@ class Rt extends Model
 
     protected $table = 'rt';
 
-    protected $fillable = ['nama', 'rt', 'rw_id', 'dukuh_id', 'kepala_id'];
+    protected $fillable = ['nama', 'rt', 'rw_id', 'dusun_id', 'kepala_id'];
+
+    protected $casts = [
+        'dusun' => 'array',
+        'penduduk' => 'array',
+    ];
 
     public function penduduk(): HasMany
     {

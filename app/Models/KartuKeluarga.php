@@ -13,7 +13,7 @@ class KartuKeluarga extends Model
 
     protected $table = 'kartu_keluarga';
 
-    protected $fillable = ['nomor_kk', 'alamat', 'status_keluarga', 'status_dalam_keluarga'];
+    protected $fillable = ['no_kk', 'status_ekonomi'];
 
     public function anggota_keluarga(): HasMany
     {
