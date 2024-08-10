@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RtResource\Pages;
 use App\Filament\Resources\RtResource\RelationManagers;
 use App\Models\Rt;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,6 +16,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
 
 class RtResource extends Resource
 {
@@ -36,20 +40,19 @@ class RtResource extends Resource
                     ->label('Nomor RT')
                     ->required(),
                 Select::make('dusun_id')
-                    ->relationship(name: 'dusun', titleAttribute: 'nama', ignoreRecord: true)
-                    ->required()
+                    ->relationship(name: 'dusun', titleAttribute: 'nama')
                     ->native(false)
                     ->searchable()
+                    ->required()
                     ->preload(),
                 Select::make('kepala_id')
-                    ->relationship(name: 'penduduk', titleAttribute: 'nama', ignoreRecord: true)
-                    ->required()->label('Kepala RT')
+                    ->label('Kepala RT')
                     ->native(false)
                     ->searchable()
-                    ->preload(),
+                    ->required()
+                    ->relationship(name: 'penduduk', titleAttribute: 'nama')
+                    ->preload()
             ])
-            ->statePath('data')
-            ->model($form->getModel())
             ->columns(1);
     }
 
@@ -60,7 +63,8 @@ class RtResource extends Resource
                 TextColumn::make('nama')
                     ->label('Nama RT'),
                 TextColumn::make('dusun.nama')
-                    ->label('Dusun'),
+                    ->label('Dusun')
+                    ->sortable(),
                 TextColumn::make('kepala.nama')
                     ->label('Kepala RT'),
             ])
@@ -68,6 +72,23 @@ class RtResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->fillForm(fn(Rt $record): array => [
+                        'nama' => $record->nama,
+                        'rt' => $record->rt,
+                        'dusun' => $record->dusun->nama,
+                        'kepala' => $record->kepala?->nama,
+                    ])->form([
+                        TextInput::make('nama')
+                            ->label('Nama RT'),
+                        TextInput::make('rt')
+                            ->numeric()
+                            ->label('Nomor RT'),
+                        TextInput::make('dusun')
+                            ->label('Nama Dusun'),
+                        TextInput::make('kepala')
+                            ->label('Kepala RT'),
+                    ]),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

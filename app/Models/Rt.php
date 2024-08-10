@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+use App\Models\Penduduk;
+use App\Models\Dusun;
 
 class Rt extends Model
 {
@@ -13,10 +17,9 @@ class Rt extends Model
 
     protected $table = 'rt';
 
-    protected $fillable = ['nama', 'rt', 'rw_id', 'dusun_id', 'kepala_id'];
+    protected $fillable = ['nama', 'rt', 'dusun_id', 'kepala_id'];
 
     protected $casts = [
-        'dusun' => 'array',
         'penduduk' => 'array',
     ];
 
@@ -28,5 +31,10 @@ class Rt extends Model
     public function dusun(): BelongsTo
     {
         return $this->belongsTo(Dusun::class);
+    }
+
+    public function kepala(): HasOne
+    {
+        return $this->hasOne(Penduduk::class, 'id', 'kepala_id');
     }
 }

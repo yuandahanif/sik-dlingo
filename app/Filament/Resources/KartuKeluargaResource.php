@@ -36,7 +36,7 @@ class KartuKeluargaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('no_kk')->searchable()->label('Nomer KK'),
-                TextColumn::make('anggota_keluarga_count')->counts('anggota_keluarga')->label('Anggota Dlama KK')
+                TextColumn::make('anggota_keluarga_count')->counts('anggota_keluarga')->label('Anggota KK')
                 ->sortable()
                 ->alignCenter(),
                 TextColumn::make('status_ekonomi')->sortable()->label('Status Ekonomi')

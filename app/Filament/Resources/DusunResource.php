@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 class DusunResource extends Resource
 {
     protected static ?string $model = Dusun::class;
@@ -44,6 +45,10 @@ class DusunResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nama')->searchable(),
+                TextColumn::make('rt_count')->counts('rt')
+                    ->label('Jumlah RT')
+                    ->sortable()
+                    ->alignCenter(),
                 TextColumn::make('ketua_id')->label('Ketua Dusun'),
             ])
             ->filters([
