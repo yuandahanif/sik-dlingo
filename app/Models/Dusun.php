@@ -15,7 +15,7 @@ class Dusun extends Model
 
     protected $fillable = ['nama', 'kepala_id'];
 
-    public function ketua(): BelongsTo
+    public function kepala(): BelongsTo
     {
         return $this->belongsTo(Penduduk::class, 'ketua_id');
     }

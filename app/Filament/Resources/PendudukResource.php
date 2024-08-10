@@ -20,6 +20,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Get;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class PendudukResource extends Resource
 {
@@ -100,27 +101,30 @@ class PendudukResource extends Resource
                         'nik' => $record->nik,
                         'jenis_kelamin' => $record->jenis_kelamin,
                         'tempat_tanggal_lahir' => [$record->tempat_lahir, " " . Carbon::parse($record->tanggal_lahir)->locale('id')->format('d F Y')],
-                        'agama' => $record->agama,
+                        'agama' => Str::ucfirst($record->agama),
                         'pekerjaan' => $record->pekerjaan,
-                        'status_pernikahan' => $record->status_pernikahan,
-                        // 'status_kependudukan' => $record->status_kependudukan,
-                        // 'status' => $record->status,
+                        'status_kependudukan' => Str::ucfirst($record->status_kependudukan ?? "Belum diisi"),
+                        'status' => Str::ucfirst($record->status ?? "Belum diisi"),
                     ])
                     ->form([
                         TextInput::make('nik')
-                            ->label('NIK')->required(),
+                            ->label('NIK'),
                         TextInput::make('nama')
-                            ->label('Nama')->required(),
+                            ->label('Nama'),
                         TextInput::make('alamat')
-                            ->label('Alamat')->required(),
+                            ->label('Alamat'),
                         TextInput::make('tempat_tanggal_lahir')
-                            ->label('Tempat/tanggal lahir')->required(),
+                            ->label('Tempat/tanggal lahir'),
                         TextInput::make('jenis_kelamin')
-                            ->label('Jenis Kelamin')->required(),
+                            ->label('Jenis Kelamin'),
                         TextInput::make('agama')
-                            ->label('Agama')->required(),
+                            ->label('Agama'),
                         TextInput::make('pekerjaan')
-                            ->label('Pekerjaan')->required(),
+                            ->label('Pekerjaan'),
+                        TextInput::make('status_kependudukan')
+                            ->label('Status Kependudukan'),
+                        TextInput::make('status')
+                            ->label('Status'),
                     ])
                     ->action(function (array $data, Penduduk $record): void {})->disabledForm()->modalSubmitAction(false),
                 Tables\Actions\EditAction::make(),
