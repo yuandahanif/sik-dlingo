@@ -116,9 +116,7 @@ class PendudukResource extends Resource
                 $ageFilter,
             ], layout: FiltersLayout::Modal)
             ->actions([
-                ViewAction::make('detail-1')
-                    ->label('Detail')
-                    ->color('primary')
+                ViewAction::make('detail')
                     ->fillForm(fn(Penduduk $record): array => [
                         'nama' => $record->nama,
                         'alamat' => "Rt " . $record->rt->nama . ", Dusun " . $record->rt->dusun->nama . ", " . $record->alamat,

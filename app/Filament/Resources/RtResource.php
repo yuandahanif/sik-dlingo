@@ -76,7 +76,7 @@ class RtResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
+                Tables\Actions\ViewAction::make('detail')
                     ->fillForm(fn(Rt $record): array => [
                         'nama' => $record->nama,
                         'rt' => $record->rt,
