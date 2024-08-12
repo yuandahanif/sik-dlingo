@@ -26,7 +26,53 @@ class Penduduk extends Model
 
     protected $table = 'penduduk';
 
-    protected $fillable = ['nama', 'nik', 'rt_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'status_pernikahan', 'pekerjaan', 'status_kependudukan', 'status', 'tanggal_meninggal'];
+    protected $fillable = [
+        'nama',
+        'nik',
+        'rt_id',
+        'jenis_kelamin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'agama',
+        'alamat',
+        'status_pernikahan',
+        'pekerjaan',
+        'status_kependudukan',
+        'status',
+        'tanggal_meninggal'
+    ];
+
+    static $jenis_kelamin = [
+        'perempuan' => 'Perempuan',
+        'laki-laki' => 'Laki-Laki'
+    ];
+
+    static $agama = [
+        'islam' => 'Islam',
+        'katolik' => 'Katolik',
+        'protestan' => 'Protestan',
+        'konghucu' => 'Konghucu',
+        'buddha' => 'Buddha',
+        'hindu' => 'Hindu'
+    ];
+
+    static $status_kependudukan = [
+        'pindah' => 'Pindah',
+        'datang' => 'Datang',
+        'null' => 'menetap'
+    ];
+
+    static $status_pernikahan = [
+        'kawin' => 'Kawin',
+        'belum kawin' => 'Belum Kawin',
+        'cerai' => 'Cerai',
+        'cerai mati' => 'Cerai Mati'
+    ];
+
+    static $status = [
+        'hidup' => 'Hidup',
+        'meninggal' => 'Meninggal'
+    ];
 
     public function kartu_keluarga(): BelongsTo
     {

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PendudukResource\Pages;
 use App\Filament\Resources\PendudukResource\RelationManagers;
 use App\Models\Penduduk;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +15,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Filters\Filter;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\FiltersLayout;
@@ -37,10 +41,21 @@ class PendudukResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama')
-                    ->label('Nama')->required()
-                    ->maxLength(255),
-                TextInput::make('nik'),
+                TextInput::make('nik')->unique(fn(string $operation) => $operation == 'create')->label('NIK')->autocomplete('off')->required()->live()->disabled(fn(string $operation) => $operation == 'edit')->validationMessages([
+                    'unique' => 'NIK sudah ada.',
+                ]),
+                TextInput::make('nama')->label('Nama')->autocomplete('off')->required(),
+                Select::make('rt_id')->relationship('rt', 'nama')->native(false)->preload()->searchable()->required(),
+                Select::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->native(false)->required(),
+                TextInput::make('tempat_lahir')->label('Tempat Lahir')->required(),
+                DatePicker::make('tanggal_lahir')->label('Tanggal Lahir')->native(false)->locale('id')->maxDate(now())->required(),
+                Select::make('agama')->options(Penduduk::$agama)->required(),
+                Textarea::make('alamat')->required(),
+                Select::make('status_pernikahan')->options(Penduduk::$status_pernikahan)->required(),
+                TextInput::make('pekerjaan')->label('Pekerjaan')->required(),
+                Select::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->live()->default(null),
+                Select::make('status')->options(Penduduk::$status)->default('hidup')->required()->live(),
+                DatePicker::make('tanggal_meninggal')->label('Tanggal meninggal')->native(false)->locale('id')->maxDate(now())->visible(fn(Get $get) => $get('status') == 'meninggal')->live(),
             ]);
     }
 
