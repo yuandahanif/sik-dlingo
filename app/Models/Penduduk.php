@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 use App\Models\Rt;
 use App\Models\Dusun;
-use App\Models\KartuKeluarga;
+use App\Models\KartuKeluargaPenduduk;
 use App\Models\Asuransi;
 use App\Models\Pertanahan;
 use App\Models\RiwayatKependudukan;
@@ -26,11 +26,11 @@ class Penduduk extends Model
 
     protected $table = 'penduduk';
 
-    protected $fillable = ['nama', 'nik', 'rt_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'status_pernikahan', 'pekerjaan'];
+    protected $fillable = ['nama', 'nik', 'rt_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'status_pernikahan', 'pekerjaan', 'status_kependudukan', 'status', 'tanggal_meninggal'];
 
-    public function Kk(): BelongsTo
+    public function kartu_keluarga(): BelongsTo
     {
-        return $this->belongsTo(KartuKeluarga::class);
+        return $this->belongsTo(KartuKeluargaPenduduk::class, "penduduk_id", "id");
     }
 
     public function rt(): BelongsTo

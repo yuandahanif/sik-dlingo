@@ -9,7 +9,7 @@ class KategoriBantuan extends Model
 {
     use HasFactory;
 
-    protected $table = 'kartu_keluarga';
+    protected $table = 'kategori_bantuan';
 
     protected $fillable = ['nama', 'deskripsi'];
 }
