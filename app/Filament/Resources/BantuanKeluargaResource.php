@@ -6,9 +6,11 @@ use App\Filament\Resources\BantuanKeluargaResource\Pages;
 use App\Filament\Resources\BantuanKeluargaResource\RelationManagers;
 use App\Models\BantuanKeluarga;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -25,7 +27,20 @@ class BantuanKeluargaResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('kartu_keluarga_id')
+                    ->relationship('keluarga', 'no_kk')
+                    ->native(false)
+                    ->label('No KK Penerima')
+                    ->searchable()
+                    ->required()
+                    ->preload(),
+                Select::make('kategori_id')
+                    ->relationship('kategori', 'nama')
+                    ->native(false)
+                    ->label('Kategori Bantuan')
+                    ->searchable()
+                    ->required()
+                    ->preload(),
             ]);
     }
 
@@ -33,7 +48,9 @@ class BantuanKeluargaResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('keluarga.no_kk')->searchable()->label('No KK'),
+                TextColumn::make('kategori.nama')->sortable()->label('Kategori Bantuan'),
+
             ])
             ->filters([
                 //

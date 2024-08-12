@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bantuan_keluarga', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('penduduk_id')->constrained('penduduk')->noActionOnDelete();
+            $table->foreignId('kartu_keluarga_id')->constrained('kartu_keluarga')->noActionOnDelete();
             $table->foreignId('kategori_id')->constrained('kategori_bantuan')->noActionOnDelete();
             $table->longText('keterangan')->nullable();
             $table->timestamps();
