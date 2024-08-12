@@ -17,7 +17,7 @@ class Dusun extends Model
 
     public function kepala(): BelongsTo
     {
-        return $this->belongsTo(Penduduk::class, 'ketua_id');
+        return $this->belongsTo(Penduduk::class, 'kepala_id');
     }
 
     public function rt(): HasMany

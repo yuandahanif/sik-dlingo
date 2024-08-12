@@ -46,11 +46,11 @@ class RtResource extends Resource
                     ->required()
                     ->preload(),
                 Select::make('kepala_id')
+                    ->relationship(name: 'kepala', titleAttribute: 'nama')
                     ->label('Kepala RT')
                     ->native(false)
                     ->searchable()
                     ->required()
-                    ->relationship(name: 'penduduk', titleAttribute: 'nama')
                     ->preload()
             ])
             ->columns(1);

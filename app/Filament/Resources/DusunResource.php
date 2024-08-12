@@ -33,10 +33,13 @@ class DusunResource extends Resource
                     ->label('Nama Dusun')
                     ->required()
                     ->maxLength(255),
-                Select::make('ketua_id')
-                    ->relationship('ketua', 'nama')
+                Select::make('kepala_id')
+                    ->relationship('kepala', 'nama')
                     ->label('Ketua Dusun')
-                    ->required(),
+                    ->native(false)
+                    ->searchable()
+                    ->required()
+                    ->preload(),
             ]);
     }
 
