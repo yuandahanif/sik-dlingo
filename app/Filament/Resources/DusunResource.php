@@ -52,7 +52,7 @@ class DusunResource extends Resource
                     ->label('Jumlah RT')
                     ->sortable()
                     ->alignCenter(),
-                TextColumn::make('ketua_id')->label('Ketua Dusun'),
+                TextColumn::make('kepala.nama')->label('Ketua Dusun'),
             ])
             ->filters([
                 //
