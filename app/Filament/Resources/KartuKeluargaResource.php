@@ -26,6 +26,11 @@ class KartuKeluargaResource extends Resource
 
     protected static ?string $navigationIcon = 'ri-file-paper-line';
 
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $slug = 'kartu-keluarga';
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -73,6 +78,9 @@ class KartuKeluargaResource extends Resource
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('status_ekonomi')->sortable()->label('Status Ekonomi')
+                    ->alignCenter(),
+                TextColumn::make('bantuan_count')->counts('bantuan')->label('Jumlah Bantuan')
+                    ->sortable()
                     ->alignCenter(),
             ])
             ->filters([

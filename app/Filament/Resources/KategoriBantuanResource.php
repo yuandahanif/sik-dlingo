@@ -21,6 +21,9 @@ class KategoriBantuanResource extends Resource
 
     protected static ?string $navigationGroup = 'Bantuan';
 
+    protected static ?string $slug = 'bantuan-kategori';
+
+
     public static function form(Form $form): Form
     {
         return $form

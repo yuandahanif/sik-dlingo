@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 use App\Models\Pertanahan;
 use App\Models\KartuKeluargaPenduduk;
+use App\Models\BantuanKeluarga;
 
 class KartuKeluarga extends Model
 {
@@ -31,5 +32,10 @@ class KartuKeluarga extends Model
     public function tanah_keluarga(): HasManyThrough
     {
         return $this->hasManyThrough(Pertanahan::class, KartuKeluargaPenduduk::class, 'kartu_keluarga_id', 'penduduk_id');
+    }
+
+    public function bantuan(): HasMany
+    {
+        return $this->hasMany(BantuanKeluarga::class, 'kartu_keluarga_id');
     }
 }

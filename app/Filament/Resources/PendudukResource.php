@@ -19,6 +19,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Get;
+use Filament\Tables\Actions\ViewAction;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -27,6 +28,10 @@ class PendudukResource extends Resource
     protected static ?string $model = Penduduk::class;
 
     protected static ?string $navigationIcon = 'fas-users-line';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $slug = 'penduduk';
 
     public static function form(Form $form): Form
     {
@@ -87,12 +92,16 @@ class PendudukResource extends Resource
                 TextColumn::make('tanggal_lahir')->label('Tanggal Lahir')->sortable(),
                 TextColumn::make('age')->label('Usia')->sortable(['tanggal_lahir']),
                 TextColumn::make('agama')->label('Agama')->sortable(['agama']),
+                TextColumn::make('bantuan_count')->counts('bantuan')->label('Jumlah Bantuan')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->alignCenter(),
             ])
             ->filters([
                 $ageFilter,
             ], layout: FiltersLayout::Modal)
             ->actions([
-                Action::make('detail')
+                ViewAction::make('detail-1')
                     ->label('Detail')
                     ->color('primary')
                     ->fillForm(fn(Penduduk $record): array => [
@@ -125,8 +134,8 @@ class PendudukResource extends Resource
                             ->label('Status Kependudukan'),
                         TextInput::make('status')
                             ->label('Status'),
-                    ])
-                    ->action(function (array $data, Penduduk $record): void {})->disabledForm()->modalSubmitAction(false),
+                    ]),
+
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

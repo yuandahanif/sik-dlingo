@@ -23,6 +23,8 @@ class BantuanKeluargaResource extends Resource
 
     protected static ?string $navigationGroup = 'Bantuan';
 
+    protected static ?string $slug = 'keluarga-bantuan';
+
     public static function form(Form $form): Form
     {
         return $form

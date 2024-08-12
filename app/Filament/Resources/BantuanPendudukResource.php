@@ -23,6 +23,8 @@ class BantuanPendudukResource extends Resource
 
     protected static ?string $navigationGroup = 'Bantuan';
 
+    protected static ?string $slug = 'penduduk-bantuan';
+
     public static function form(Form $form): Form
     {
         return $form

@@ -68,6 +68,11 @@ class Penduduk extends Model
         return $this->hasManyThrough(Penduduk::class, PohonKeluarga::class, 'parent_id', 'id');
     }
 
+    public function bantuan(): HasMany
+    {
+        return $this->hasMany(BantuanPenduduk::class, 'penduduk_id');
+    }
+
     protected function age(): Attribute
     {
         return Attribute::make(

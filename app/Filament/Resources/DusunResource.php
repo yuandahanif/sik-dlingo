@@ -24,6 +24,10 @@ class DusunResource extends Resource
 
     protected static ?string $navigationLabel = 'Dusun';
 
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $slug = 'dusun';
+
 
     public static function form(Form $form): Form
     {

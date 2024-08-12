@@ -28,6 +28,10 @@ class RtResource extends Resource
 
     protected static ?string $navigationIcon = 'healthicons-f-village';
 
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $slug = 'rt';
+
     public static function form(Form $form): Form
     {
         return $form
