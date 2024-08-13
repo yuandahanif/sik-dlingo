@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KartuKeluargaResource\Pages;
 use App\Filament\Resources\KartuKeluargaResource\RelationManagers;
+use App\Filament\Resources\PendudukResource\Pages\ViewPenduduk;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -19,6 +20,7 @@ use Filament\Forms\Components\Select;
 use App\Models\KartuKeluarga;
 use App\Models\KartuKeluargaPenduduk;
 use App\Models\Penduduk;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Filters\SelectFilter;
 
@@ -120,6 +122,15 @@ class KartuKeluargaResource extends Resource
                                     ->required()
                                     ->options(KartuKeluargaPenduduk::status_dalam_keluarga())
                                     ->native(false),
+
+                            ])
+                            ->extraItemActions([
+                                Action::make('LihatDetailPenduduk')->label('Lihat Penduduk')
+                                    ->icon('fas-user')
+                                    ->url(function (array $arguments, Repeater $component): string {
+                                        $data = $component->getItemState($arguments['item']);
+                                        return route(ViewPenduduk::getRouteName(), ['record' => $data['penduduk_id']]);
+                                    }),
                             ])
                             ->columns(2)
                             ->columnSpan(2)

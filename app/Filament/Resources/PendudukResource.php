@@ -78,7 +78,7 @@ class PendudukResource extends Resource
                             )
                             ->debounce(1000)
                             ->live(),
-                        TextInput::make('highest_age')->numeric()->label('Batas Atas')->prefix('Batas Atas')->maxValue(150)
+                        TextInput::make('highest_age')->numeric()->label('Batas Atas')->suffix('Batas Atas')->maxValue(150)
                             ->minValue(
                                 function (Get $get): Int {
                                     $lowest_age = $get('lowest_age') ?? 0;
@@ -147,11 +147,11 @@ class PendudukResource extends Resource
             ])
             ->filters([
                 $ageFilter,
-                $dusunFilter,
                 SelectFilter::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->label('Jenis Kelamin')->native(false),
                 SelectFilter::make('agama')->options(Penduduk::$agama)->label('Agama')->native(false)->columnSpan(1),
                 SelectFilter::make('status')->options(Penduduk::$status)->label('Status')->native(false)->columnSpan(1),
                 SelectFilter::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->label('Status Kependudukan')->native(false)->columnSpan(1),
+                $dusunFilter,
             ], layout: FiltersLayout::Modal)
             ->actions([
                 ViewAction::make('detail')
@@ -212,6 +212,7 @@ class PendudukResource extends Resource
         return [
             'index' => Pages\ListPenduduks::route('/'),
             'create' => Pages\CreatePenduduk::route('/create'),
+            'view' => Pages\ViewPenduduk::route('/{record}'),
             'edit' => Pages\EditPenduduk::route('/{record}/edit'),
         ];
     }
