@@ -20,6 +20,7 @@ use App\Models\KartuKeluarga;
 use App\Models\KartuKeluargaPenduduk;
 use App\Models\Penduduk;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Filters\SelectFilter;
 
 class KartuKeluargaResource extends Resource
 {
@@ -86,7 +87,7 @@ class KartuKeluargaResource extends Resource
                     ->alignCenter(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status_ekonomi')->options(KartuKeluarga::$status_ekonomi)->label('Status Ekonomi')->native(false)->columnSpan(1),
             ])
             ->actions([
                 ViewAction::make('detail')

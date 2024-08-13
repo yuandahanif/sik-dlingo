@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -65,11 +66,14 @@ class RtResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nama')
+                    ->searchable()
                     ->label('Nama RT'),
                 TextColumn::make('dusun.nama')
                     ->label('Dusun')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('kepala.nama')
+                    ->searchable()
                     ->label('Kepala RT'),
                 TextColumn::make('penduduk_count')->counts('penduduk')
                     ->label('Jumlah Penduduk')
@@ -78,7 +82,7 @@ class RtResource extends Resource
                     ->alignCenter(),
             ])
             ->filters([
-                //
+                SelectFilter::make('dusun')->relationship('dusun', 'nama')->multiple()->preload()->label('Dusun')->native(false)->columnSpan(1),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make('detail')

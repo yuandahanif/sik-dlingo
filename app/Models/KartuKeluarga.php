@@ -24,6 +24,11 @@ class KartuKeluarga extends Model
         'tanah_keluarga' => 'array',
     ];
 
+    static $status_ekonomi = [
+        'mampu' => 'Mampu',
+        'tidak_mampu' => 'Tidak Mampu'
+    ];
+
     public function anggota_keluarga(): HasMany
     {
         return $this->hasMany(KartuKeluargaPenduduk::class, 'kartu_keluarga_id', 'id');

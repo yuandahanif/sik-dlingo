@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AsuransiResource\Pages;
 use App\Filament\Resources\AsuransiResource\RelationManagers;
 use App\Models\Asuransi;
+use App\Models\Penduduk;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,7 +37,7 @@ class AsuransiResource extends Resource
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('penduduk_id')
-                    ->relationship(name: 'Pemilik', titleAttribute: 'nama')
+                    ->relationship(name: 'pemilik', titleAttribute: 'nama')
                     ->label('Pemilik')
                     ->preload()
                     ->native(false)
@@ -60,6 +62,7 @@ class AsuransiResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pemilik.nama')
                     ->label('Pemilik')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
@@ -73,7 +76,15 @@ class AsuransiResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('penduduk_id')
+                    ->options(Penduduk::has('asuransi')->pluck('nama', 'id'))
+                    ->multiple()
+                    ->preload()
+                    ->label('Pemilik')
+                    ->native(false)
+                    ->columnSpan(1),
+                SelectFilter::make('kategori_id')->relationship('kategori', 'nama')->multiple()->preload()->label('Kategori')->native(false)->columnSpan(1),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

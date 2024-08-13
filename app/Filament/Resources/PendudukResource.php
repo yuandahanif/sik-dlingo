@@ -65,7 +65,7 @@ class PendudukResource extends Resource
     public static function table(Table $table): Table
     {
         $ageFilter =
-            Filter::make('created_at')
+            Filter::make('age')
             ->form([
                 Fieldset::make('Usia')
                     ->schema([
@@ -93,12 +93,42 @@ class PendudukResource extends Resource
             ->query(function (Builder $query, array $data): Builder {
                 return $query
                     ->when(
-                        $data['lowest_age'],
+                        isset($data['lowest_age']),
                         fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '<=', Carbon::now()->subYears($date)),
                     )
                     ->when(
-                        $data['highest_age'],
+                        isset($data['highest_age']),
                         fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '>=', Carbon::now()->subYears($date)),
+                    );
+            })->columnSpanFull();
+
+        $dusunFilter =
+            Filter::make('dusun')
+            ->form([
+                Fieldset::make('Alamat')
+                    ->schema([
+                        Select::make('dusun')->label('Dusun')
+                            ->options(Dusun::pluck('nama', 'id'))
+                            ->preload()
+                            ->debounce(1000)
+                            ->native(false)
+                            ->multiple()
+                            ->live(),
+                        Select::make('rt_id')->label('RT')
+                            ->native(false)
+                            ->preload()
+                            ->multiple()
+                            ->disabled(fn(Get $get) => !$get('dusun'))
+                            ->options(fn(Get $get) => Rt::whereIn('dusun_id', $get('dusun'))->pluck('nama', 'id'))
+                            ->debounce(1000)
+                            ->live(),
+
+                    ])->columns(2),
+            ])->query(function (Builder $query, array $data): Builder {
+                return $query
+                    ->when(
+                        $data['rt_id'],
+                        fn(Builder $query, $data): Builder => $query->whereIn('rt_id', $data),
                     );
             })->columnSpanFull();
 
@@ -117,8 +147,7 @@ class PendudukResource extends Resource
             ])
             ->filters([
                 $ageFilter,
-                SelectFilter::make('dusun')->relationship('rt.dusun', 'nama')->label('Dusun')->native(false)->multiple()->preload()->columnSpan(1),
-                SelectFilter::make('rt_id')->relationship('rt','nama')->label('RT')->native(false)->columnSpan(1),
+                $dusunFilter,
                 SelectFilter::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->label('Jenis Kelamin')->native(false),
                 SelectFilter::make('agama')->options(Penduduk::$agama)->label('Agama')->native(false)->columnSpan(1),
                 SelectFilter::make('status')->options(Penduduk::$status)->label('Status')->native(false)->columnSpan(1),
