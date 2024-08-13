@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -62,6 +63,19 @@ class DusunResource extends Resource
                 //
             ])
             ->actions([
+                ViewAction::make('detail')
+                    ->fillForm(fn(Dusun $record): array => [
+                        'nama' => $record->nama,
+                        'kepala_id' => $record->kepala_id,
+                    ])
+                    ->form([
+                        TextInput::make('nama')
+                            ->label('Nama Dusun'),
+                        Select::make('kepala_id')
+                            ->label('Ketua Dusun')
+                            ->relationship('kepala', 'nama')
+                            ->native(false),
+                    ]),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

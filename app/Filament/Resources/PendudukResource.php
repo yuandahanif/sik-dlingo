@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PendudukResource\Pages;
 use App\Filament\Resources\PendudukResource\RelationManagers;
+use App\Models\Dusun;
 use App\Models\Penduduk;
+use App\Models\Rt;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Form;
@@ -24,6 +26,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Get;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -97,7 +100,7 @@ class PendudukResource extends Resource
                         $data['highest_age'],
                         fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '>=', Carbon::now()->subYears($date)),
                     );
-            });
+            })->columnSpanFull();
 
         return $table
             ->columns([
@@ -114,6 +117,12 @@ class PendudukResource extends Resource
             ])
             ->filters([
                 $ageFilter,
+                SelectFilter::make('dusun')->relationship('rt.dusun', 'nama')->label('Dusun')->native(false)->multiple()->preload()->columnSpan(1),
+                SelectFilter::make('rt_id')->relationship('rt','nama')->label('RT')->native(false)->columnSpan(1),
+                SelectFilter::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->label('Jenis Kelamin')->native(false),
+                SelectFilter::make('agama')->options(Penduduk::$agama)->label('Agama')->native(false)->columnSpan(1),
+                SelectFilter::make('status')->options(Penduduk::$status)->label('Status')->native(false)->columnSpan(1),
+                SelectFilter::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->label('Status Kependudukan')->native(false)->columnSpan(1),
             ], layout: FiltersLayout::Modal)
             ->actions([
                 ViewAction::make('detail')
@@ -127,10 +136,13 @@ class PendudukResource extends Resource
                         'pekerjaan' => $record->pekerjaan,
                         'status_kependudukan' => Str::ucfirst($record->status_kependudukan ?? "Belum diisi"),
                         'status' => Str::ucfirst($record->status ?? "Belum diisi"),
+                        'no_kk' => $record->kartu_keluarga->kartu_keluarga->no_kk ?? "Belum bergabung dengan KK",
                     ])
                     ->form([
                         TextInput::make('nik')
-                            ->label('NIK'),
+                            ->label('NIK')->columnSpan(1),
+                        TextInput::make('no_kk')
+                            ->label('No. KK')->columnSpan(1),
                         TextInput::make('nama')
                             ->label('Nama'),
                         TextInput::make('alamat')
@@ -148,7 +160,6 @@ class PendudukResource extends Resource
                         TextInput::make('status')
                             ->label('Status'),
                     ]),
-
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -156,7 +167,8 @@ class PendudukResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->filtersFormWidth(MaxWidth::TwoExtraLarge);
+            ->filtersFormWidth(MaxWidth::TwoExtraLarge)
+            ->filtersFormColumns(2);
     }
 
     public static function getRelations(): array

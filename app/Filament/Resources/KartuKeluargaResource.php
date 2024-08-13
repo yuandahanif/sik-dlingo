@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 use App\Models\KartuKeluarga;
 use App\Models\KartuKeluargaPenduduk;
 use App\Models\Penduduk;
+use Filament\Tables\Actions\ViewAction;
 
 class KartuKeluargaResource extends Resource
 {
@@ -42,6 +43,7 @@ class KartuKeluargaResource extends Resource
                     ->required(),
                 Select::make('status_ekonomi')
                     ->label('Status Ekonomi')
+                    ->native(false)
                     ->options([
                         'mampu' => 'Mampu',
                         'tidak_mampu' => 'Tidak Mampu',
@@ -87,6 +89,40 @@ class KartuKeluargaResource extends Resource
                 //
             ])
             ->actions([
+                ViewAction::make('detail')
+                    ->fillForm(fn(KartuKeluarga $record): array => [
+                        'no_kk' => $record->no_kk,
+                        'status_ekonomi' => $record->status_ekonomi,
+                        'anggota_keluarga' => $record->anggota_keluarga(),
+                    ])
+                    ->form([
+                        TextInput::make('no_kk')
+                            ->label('Nomer KK'),
+                        Select::make('status_ekonomi')
+                            ->label('Status Ekonomi')
+                            ->native(false)
+                            ->options([
+                                'mampu' => 'Mampu',
+                                'tidak_mampu' => 'Tidak Mampu',
+                            ])
+                            ->required(),
+                        Repeater::make('anggota_keluarga')
+                            ->relationship()
+                            ->schema([
+                                Select::make('penduduk_id')
+                                    ->label("Nama")
+                                    ->native(false)
+                                    ->searchable()
+                                    ->options(Penduduk::pluck('nama', 'id')),
+                                Select::make('status_dalam_keluarga')
+                                    ->label('Status Dalam Keluarga')
+                                    ->required()
+                                    ->options(KartuKeluargaPenduduk::status_dalam_keluarga())
+                                    ->native(false),
+                            ])
+                            ->columns(2)
+                            ->columnSpan(2)
+                    ]),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

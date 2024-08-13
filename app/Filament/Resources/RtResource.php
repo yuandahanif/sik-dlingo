@@ -71,6 +71,11 @@ class RtResource extends Resource
                     ->sortable(),
                 TextColumn::make('kepala.nama')
                     ->label('Kepala RT'),
+                TextColumn::make('penduduk_count')->counts('penduduk')
+                    ->label('Jumlah Penduduk')
+                    ->sortable()
+                    ->toggleable()
+                    ->alignCenter(),
             ])
             ->filters([
                 //

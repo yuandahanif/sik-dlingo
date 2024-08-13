@@ -76,7 +76,7 @@ class Penduduk extends Model
 
     public function kartu_keluarga(): BelongsTo
     {
-        return $this->belongsTo(KartuKeluargaPenduduk::class, "penduduk_id", "id");
+        return $this->belongsTo(KartuKeluargaPenduduk::class, "id", "penduduk_id",);
     }
 
     public function rt(): BelongsTo

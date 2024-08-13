@@ -30,11 +30,11 @@ class KartuKeluargaPenduduk extends Model
 
     public function penduduk(): HasOne
     {
-        return $this->hasOne(Penduduk::class);
+        return $this->hasOne(Penduduk::class, 'penduduk_id', 'id');
     }
 
     public function kartu_keluarga(): BelongsTo
     {
-        return $this->belongsTo(KartuKeluarga::class);
+        return $this->belongsTo(KartuKeluarga::class, 'kartu_keluarga_id', 'id');
     }
 }

@@ -20,7 +20,7 @@ class KartuKeluarga extends Model
     protected $fillable = ['no_kk', 'status_ekonomi'];
 
     protected $casts = [
-        // 'anggota_keluarga' => 'array',
+        'anggota_keluarga' => 'array',
         'tanah_keluarga' => 'array',
     ];
 

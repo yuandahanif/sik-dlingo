@@ -23,8 +23,8 @@ class Asuransi extends Model
         return $this->belongsTo(Penduduk::class, 'penduduk_id');
     }
 
-    public function kategori(): HasOne
+    public function kategori(): BelongsTo
     {
-        return $this->hasOne(KategoriAsuransi::class);
+        return $this->belongsTo(KategoriAsuransi::class);
     }
 }
