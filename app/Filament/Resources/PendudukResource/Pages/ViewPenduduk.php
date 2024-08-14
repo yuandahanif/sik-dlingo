@@ -19,6 +19,9 @@ class ViewPenduduk extends ViewRecord
         return [
             EditAction::make()
                 ->record($this->record),
+
+            Action::make('editRelasiKeluarga')
+                ->url(fn(): string => route(EditPendudukRelasiKeluarga::getRouteName(), ['record' => $this->record->id])),
             DeleteAction::make()
                 ->record($this->record),
         ];

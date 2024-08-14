@@ -17,4 +17,5 @@ class EditPenduduk extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    
 }

@@ -19,6 +19,7 @@ use App\Models\Asuransi;
 use App\Models\Pertanahan;
 use App\Models\RiwayatKependudukan;
 use App\Models\PohonKeluarga;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Str;
 
 class Penduduk extends Model
@@ -117,9 +118,20 @@ class Penduduk extends Model
         return $this->hasOne(RiwayatKependudukan::class);
     }
 
+
+    public function pohon_keluarga(): HasMany
+    {
+        return $this->hasMany(PohonKeluarga::class, 'child_id');
+    }
+
     public function orang_tua_kandung(): HasManyThrough
     {
         return $this->hasManyThrough(Penduduk::class, PohonKeluarga::class, 'child_id', 'id');
+    }
+
+    public function orang_tua_kandung_belong(): BelongsToMany
+    {
+        return $this->belongsToMany(Penduduk::class, 'pohon_keluarga', 'child_id', 'parent_id')->withPivot('hubungan');
     }
 
     public function bantuan(): HasMany

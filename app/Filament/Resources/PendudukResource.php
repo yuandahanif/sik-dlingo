@@ -45,9 +45,11 @@ class PendudukResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nik')->unique(fn(string $operation) => $operation == 'create')->label('NIK')->autocomplete('off')->required()->live()->disabled(fn(string $operation) => $operation == 'edit')->validationMessages([
-                    'unique' => 'NIK sudah ada.',
-                ]),
+                TextInput::make('nik')->unique(fn(string $operation) => $operation == 'create')->label('NIK')->autocomplete('off')->required()->live()
+                    ->disabled(fn(string $operation) => $operation == 'edit')
+                    ->validationMessages([
+                        'unique' => 'NIK sudah ada.',
+                    ]),
                 TextInput::make('nama')->label('Nama')->autocomplete('off')->required(),
                 Select::make('rt_id')->relationship('rt', 'nama')->native(false)->preload()->searchable()->required(),
                 Select::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->native(false)->required(),
@@ -155,6 +157,7 @@ class PendudukResource extends Resource
                 $dusunFilter,
             ], layout: FiltersLayout::Modal)
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -201,6 +204,7 @@ class PendudukResource extends Resource
             'index' => Pages\ListPenduduks::route('/'),
             'create' => Pages\CreatePenduduk::route('/create'),
             'view' => Pages\ViewPenduduk::route('/{record}'),
+            'edit-contact' => Pages\EditPendudukRelasiKeluarga::route('/{record}/edit/relasi-keluarga'),
             'edit' => Pages\EditPenduduk::route('/{record}/edit'),
         ];
     }

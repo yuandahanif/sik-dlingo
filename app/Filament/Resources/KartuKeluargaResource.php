@@ -95,49 +95,7 @@ class KartuKeluargaResource extends Resource
                 SelectFilter::make('status_ekonomi')->options(KartuKeluarga::$status_ekonomi)->label('Status Ekonomi')->native(false)->columnSpan(1),
             ])
             ->actions([
-                ViewAction::make('detail')
-                    ->fillForm(fn(KartuKeluarga $record): array => [
-                        'no_kk' => $record->no_kk,
-                        'status_ekonomi' => $record->status_ekonomi,
-                        'anggota_keluarga' => $record->anggota_keluarga(),
-                    ])
-                    ->form([
-                        TextInput::make('no_kk')
-                            ->label('Nomer KK'),
-                        Select::make('status_ekonomi')
-                            ->label('Status Ekonomi')
-                            ->native(false)
-                            ->options([
-                                'mampu' => 'Mampu',
-                                'tidak_mampu' => 'Tidak Mampu',
-                            ])
-                            ->required(),
-                        Repeater::make('anggota_keluarga')
-                            ->relationship()
-                            ->schema([
-                                Select::make('penduduk_id')
-                                    ->label("Nama")
-                                    ->native(false)
-                                    ->searchable()
-                                    ->options(Penduduk::pluck('nama', 'id')),
-                                Select::make('status_dalam_keluarga')
-                                    ->label('Status Dalam Keluarga')
-                                    ->required()
-                                    ->options(KartuKeluargaPenduduk::status_dalam_keluarga())
-                                    ->native(false),
-
-                            ])
-                            ->extraItemActions([
-                                Action::make('LihatDetailPenduduk')->label('Lihat Penduduk')
-                                    ->icon('fas-user')
-                                    ->url(function (array $arguments, Repeater $component): string {
-                                        $data = $component->getItemState($arguments['item']);
-                                        return route(ViewPenduduk::getRouteName(), ['record' => $data['penduduk_id']]);
-                                    }),
-                            ])
-                            ->columns(2)
-                            ->columnSpan(2)
-                    ]),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -167,7 +125,7 @@ class KartuKeluargaResource extends Resource
                                     ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
                                 Infolists\Components\TextEntry::make('kartu_keluarga.status_dalam_keluarga')
                                     ->label('Status Dalam Keluarga'),
-                                Infolists\Components\TextEntry::make('orang_tua_kandung.parent')
+                                Infolists\Components\TextEntry::make('orang_tua_kandung_belong')
                                     ->label('Orang Tua'),
 
                             ]),
