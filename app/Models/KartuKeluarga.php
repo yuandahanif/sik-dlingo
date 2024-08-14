@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use App\Models\Pertanahan;
 use App\Models\KartuKeluargaPenduduk;
 use App\Models\BantuanKeluarga;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class KartuKeluarga extends Model
 {
@@ -32,6 +33,10 @@ class KartuKeluarga extends Model
     public function anggota_keluarga(): HasMany
     {
         return $this->hasMany(KartuKeluargaPenduduk::class, 'kartu_keluarga_id', 'id');
+    }
+    public function anggota_keluarga_belong(): BelongsToMany
+    {
+        return $this->belongsToMany(Penduduk::class, 'kartu_keluarga_penduduk', 'kartu_keluarga_id', 'penduduk_id');
     }
 
     public function tanah_keluarga(): HasManyThrough

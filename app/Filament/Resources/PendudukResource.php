@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\KartuKeluargaResource\Pages\ViewKartuKeluarga;
 use App\Filament\Resources\PendudukResource\Pages;
 use App\Filament\Resources\PendudukResource\RelationManagers;
 use App\Models\Dusun;
@@ -20,15 +21,15 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Tables\Filters\Filter;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Get;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
+
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 
 class PendudukResource extends Resource
 {
@@ -154,41 +155,6 @@ class PendudukResource extends Resource
                 $dusunFilter,
             ], layout: FiltersLayout::Modal)
             ->actions([
-                ViewAction::make('detail')
-                    ->fillForm(fn(Penduduk $record): array => [
-                        'nama' => $record->nama,
-                        'alamat' => "Rt " . $record->rt->nama . ", Dusun " . $record->rt->dusun->nama . ", " . $record->alamat,
-                        'nik' => $record->nik,
-                        'jenis_kelamin' => $record->jenis_kelamin,
-                        'tempat_tanggal_lahir' => [$record->tempat_lahir, " " . Carbon::parse($record->tanggal_lahir)->locale('id')->format('d F Y')],
-                        'agama' => Str::ucfirst($record->agama),
-                        'pekerjaan' => $record->pekerjaan,
-                        'status_kependudukan' => Str::ucfirst($record->status_kependudukan ?? "Belum diisi"),
-                        'status' => Str::ucfirst($record->status ?? "Belum diisi"),
-                        'no_kk' => $record->kartu_keluarga->kartu_keluarga->no_kk ?? "Belum bergabung dengan KK",
-                    ])
-                    ->form([
-                        TextInput::make('nik')
-                            ->label('NIK')->columnSpan(1),
-                        TextInput::make('no_kk')
-                            ->label('No. KK')->columnSpan(1),
-                        TextInput::make('nama')
-                            ->label('Nama'),
-                        TextInput::make('alamat')
-                            ->label('Alamat'),
-                        TextInput::make('tempat_tanggal_lahir')
-                            ->label('Tempat/tanggal lahir'),
-                        TextInput::make('jenis_kelamin')
-                            ->label('Jenis Kelamin'),
-                        TextInput::make('agama')
-                            ->label('Agama'),
-                        TextInput::make('pekerjaan')
-                            ->label('Pekerjaan'),
-                        TextInput::make('status_kependudukan')
-                            ->label('Status Kependudukan'),
-                        TextInput::make('status')
-                            ->label('Status'),
-                    ]),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -198,6 +164,28 @@ class PendudukResource extends Resource
             ])
             ->filtersFormWidth(MaxWidth::TwoExtraLarge)
             ->filtersFormColumns(2);
+    }
+
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Fieldset::make('Data Penduduk')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('nik')->label('NIK'),
+                        Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga.no_kk')->label('No. KK')
+                            ->url(fn(Penduduk $record): string => route(ViewKartuKeluarga::getRouteName(), ['record' => $record->kartu_keluarga->kartu_keluarga])),
+                        Infolists\Components\TextEntry::make('nama'),
+                        Infolists\Components\TextEntry::make('alamat'),
+                        Infolists\Components\TextEntry::make('tempat_tanggal_lahir')->label('Tempat/Tanggal lahir'),
+                        Infolists\Components\TextEntry::make('agama')->label('Agama'),
+                        Infolists\Components\TextEntry::make('pekerjaan')->label('Pekerjaan'),
+                        Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')->default('-'),
+                        Infolists\Components\TextEntry::make('status')->label('Status'),
+
+                    ]),
+            ]);
     }
 
     public static function getRelations(): array

@@ -24,6 +24,9 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Filters\SelectFilter;
 
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+
 class KartuKeluargaResource extends Resource
 {
     protected static ?string $model = KartuKeluarga::class;
@@ -144,6 +147,34 @@ class KartuKeluargaResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Fieldset::make('Data Kartu Keluarga')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('no_kk')
+                            ->label('Nomer KK'),
+                        Infolists\Components\TextEntry::make('status_ekonomi')
+                            ->label('Status Ekonomi'),
+                        Infolists\Components\RepeatableEntry::make('anggota_keluarga_belong')
+                            ->label('Anggota Keluarga')
+                            ->columnSpanFull()
+                            ->columns(5)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('nama')
+                                    ->label("Nama")->columnSpan(2)
+                                    ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
+                                Infolists\Components\TextEntry::make('kartu_keluarga.status_dalam_keluarga')
+                                    ->label('Status Dalam Keluarga'),
+                                Infolists\Components\TextEntry::make('orang_tua_kandung.parent')
+                                    ->label('Orang Tua'),
+
+                            ]),
+                    ]),
+            ]);
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -156,6 +187,7 @@ class KartuKeluargaResource extends Resource
         return [
             'index' => Pages\ListKartuKeluargas::route('/'),
             'create' => Pages\CreateKartuKeluarga::route('/create'),
+            'view' => Pages\ViewKartuKeluarga::route('/{record}'),
             'edit' => Pages\EditKartuKeluarga::route('/{record}/edit'),
         ];
     }

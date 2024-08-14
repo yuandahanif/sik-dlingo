@@ -19,6 +19,7 @@ use App\Models\Asuransi;
 use App\Models\Pertanahan;
 use App\Models\RiwayatKependudukan;
 use App\Models\PohonKeluarga;
+use Str;
 
 class Penduduk extends Model
 {
@@ -74,6 +75,13 @@ class Penduduk extends Model
         'meninggal' => 'Meninggal'
     ];
 
+    protected function tempatTanggalLahir(): Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => $this->tempat_lahir . ', ' . Carbon::parse($this->tanggal_lahir)->locale('id')->format('d F Y'),
+        );
+    }
+
     public function kartu_keluarga(): BelongsTo
     {
         return $this->belongsTo(KartuKeluargaPenduduk::class, "id", "penduduk_id",);
@@ -111,7 +119,7 @@ class Penduduk extends Model
 
     public function orang_tua_kandung(): HasManyThrough
     {
-        return $this->hasManyThrough(Penduduk::class, PohonKeluarga::class, 'parent_id', 'id');
+        return $this->hasManyThrough(Penduduk::class, PohonKeluarga::class, 'child_id', 'id');
     }
 
     public function bantuan(): HasMany
