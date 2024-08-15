@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KartuKeluargaResource\Pages\ViewKartuKeluarga;
 use App\Filament\Resources\PendudukResource\Pages;
+use App\Filament\Resources\PendudukResource\Pages\ViewPenduduk;
 use App\Filament\Resources\PendudukResource\RelationManagers;
 use App\Models\Dusun;
 use App\Models\Penduduk;
@@ -186,7 +187,19 @@ class PendudukResource extends Resource
                         Infolists\Components\TextEntry::make('pekerjaan')->label('Pekerjaan'),
                         Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')->default('-'),
                         Infolists\Components\TextEntry::make('status')->label('Status'),
+                    ]),
+                Infolists\Components\Fieldset::make('Anak')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('anak')
+                            ->label('')
+                            ->contained(false)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('nama')
+                                    ->listWithLineBreaks()
+                                    ->label('')
+                                    ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
 
+                            ]),
                     ]),
             ]);
     }

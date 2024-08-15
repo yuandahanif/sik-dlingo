@@ -10,9 +10,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Forms\Form;
 use Illuminate\Database\Eloquent\Model;
-
-
 use Filament\Infolists;
+use Illuminate\Database\Eloquent\Builder;
 
 class EditPendudukRelasiKeluarga extends EditRecord
 {
@@ -37,7 +36,7 @@ class EditPendudukRelasiKeluarga extends EditRecord
                     ->schema([
                         Select::make('parent_id')
                             ->searchable()
-                            ->relationship('parent', 'nama')
+                            ->relationship('parent', 'nama', fn(Builder $query) => $query->where('id', '!=', $this->record->id))
                             ->native(false)
                             ->preload()
                             ->required(),

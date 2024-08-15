@@ -129,9 +129,18 @@ class Penduduk extends Model
         return $this->hasManyThrough(Penduduk::class, PohonKeluarga::class, 'child_id', 'id');
     }
 
-    public function orang_tua_kandung_belong(): BelongsToMany
+    public function ayah(): BelongsToMany
     {
-        return $this->belongsToMany(Penduduk::class, 'pohon_keluarga', 'child_id', 'parent_id')->withPivot('hubungan');
+        return $this->belongsToMany(Penduduk::class, 'pohon_keluarga', 'child_id', 'parent_id')->withPivot('hubungan')->where('hubungan', 'ayah');
+    }
+    public function ibu(): BelongsToMany
+    {
+        return $this->belongsToMany(Penduduk::class, 'pohon_keluarga', 'child_id', 'parent_id')->withPivot('hubungan')->where('hubungan', 'ibu');
+    }
+
+    public function anak(): BelongsToMany
+    {
+        return $this->belongsToMany(Penduduk::class, 'pohon_keluarga', 'parent_id', 'child_id')->withPivot('hubungan')->where('parent_id', $this->id);
     }
 
     public function bantuan(): HasMany

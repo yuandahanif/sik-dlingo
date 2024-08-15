@@ -125,9 +125,26 @@ class KartuKeluargaResource extends Resource
                                     ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
                                 Infolists\Components\TextEntry::make('kartu_keluarga.status_dalam_keluarga')
                                     ->label('Status Dalam Keluarga'),
-                                Infolists\Components\TextEntry::make('orang_tua_kandung_belong')
-                                    ->label('Orang Tua'),
+                                Infolists\Components\RepeatableEntry::make('ayah')
+                                    ->label('Ayah Kandung')
+                                    ->contained(false)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('nama')
+                                            ->listWithLineBreaks()
+                                            ->label('')
+                                            ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
 
+                                    ]),
+                                Infolists\Components\RepeatableEntry::make('ibu')
+                                    ->label('Ibu Kandung')
+                                    ->contained(false)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('nama')
+                                            ->listWithLineBreaks()
+                                            ->label('')
+                                            ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
+
+                                    ]),
                             ]),
                     ]),
             ]);
