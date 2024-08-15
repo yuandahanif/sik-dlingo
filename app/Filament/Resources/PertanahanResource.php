@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PertanahanResource\Pages;
 use App\Filament\Resources\PertanahanResource\RelationManagers;
+use App\Models\Penduduk;
 use App\Models\Pertanahan;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -56,7 +57,7 @@ class PertanahanResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nomor_sertifikat')
-                    ->searchable(),
+                    ->searchable()->label('Nomer Sertifikat/Letter C'),
                 Tables\Columns\TextColumn::make('tipe_sertifikat'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
@@ -71,7 +72,7 @@ class PertanahanResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('pemilik')
-                    ->relationship('pemilik', 'nama')
+                    ->options(Penduduk::has('tanah')->pluck('nama', 'id'))
                     ->searchable()
                     ->preload(),
                 SelectFilter::make('tipe_sertifikat')

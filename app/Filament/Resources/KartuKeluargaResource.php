@@ -61,8 +61,16 @@ class KartuKeluargaResource extends Resource
                         Select::make('penduduk_id')
                             ->label("Nama")
                             ->native(false)
-                            ->searchable()
-                            ->options(Penduduk::pluck('nama', 'id')),
+                            ->searchable(['nama', 'nik'])
+                            ->options(function () {
+                                $kv = [];
+                                $penduduk = Penduduk::get(['nik', 'nama', 'id']);
+                                foreach ($penduduk as $key => $value) {
+                                    $kv[$value->id] = $value->nik . ' - ' . $value->nama;
+                                }
+
+                                return $kv;
+                            }),
                         Select::make('status_dalam_keluarga')
                             ->label('Status Dalam Keluarga')
                             ->required()
@@ -85,14 +93,14 @@ class KartuKeluargaResource extends Resource
                 TextColumn::make('tanah_keluarga_count')->counts('tanah_keluarga')->label('Jumlah Tanah')
                     ->sortable()
                     ->alignCenter(),
-                TextColumn::make('status_ekonomi')->sortable()->label('Status Ekonomi')
+                TextColumn::make('status_dtks')->sortable()->label('Status DTKS')
                     ->alignCenter(),
                 TextColumn::make('bantuan_count')->counts('bantuan')->label('Jumlah Bantuan')
                     ->sortable()
                     ->alignCenter(),
             ])
             ->filters([
-                SelectFilter::make('status_ekonomi')->options(KartuKeluarga::$status_ekonomi)->label('Status Ekonomi')->native(false)->columnSpan(1),
+                SelectFilter::make('status_ekonomi')->options(KartuKeluarga::$status_dtks)->label('Status DTKS')->native(false)->columnSpan(1),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

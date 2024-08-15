@@ -179,7 +179,7 @@ class PendudukResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('nik')->label('NIK'),
                         Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga.no_kk')->label('No. KK')
-                            ->url(fn(Penduduk $record): string => route(ViewKartuKeluarga::getRouteName(), ['record' => $record->kartu_keluarga->kartu_keluarga])),
+                            ->url(fn(Penduduk $record): string => route(ViewKartuKeluarga::getRouteName(), ['record' => $record?->kartu_keluarga?->kartu_keluarga ?? '#'])),
                         Infolists\Components\TextEntry::make('nama'),
                         Infolists\Components\TextEntry::make('alamat'),
                         Infolists\Components\TextEntry::make('tempat_tanggal_lahir')->label('Tempat/Tanggal lahir'),

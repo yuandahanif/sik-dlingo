@@ -5,12 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BantuanPendudukResource\Pages;
 use App\Filament\Resources\BantuanPendudukResource\RelationManagers;
 use App\Models\BantuanPenduduk;
+use App\Models\Penduduk;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -54,7 +56,14 @@ class BantuanPendudukResource extends Resource
                 TextColumn::make('kategori.nama')->sortable()->label('Kategori Bantuan'),
             ])
             ->filters([
-                //
+                SelectFilter::make('penduduk_id')
+                    ->options(Penduduk::has('bantuan')->pluck('nama', 'id'))
+                    ->multiple()
+                    ->preload()
+                    ->label('Pemilik')
+                    ->native(false)
+                    ->columnSpan(1),
+                SelectFilter::make('kategori_id')->relationship('kategori', 'nama')->multiple()->preload()->label('Kategori')->native(false)->columnSpan(1),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

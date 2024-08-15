@@ -18,16 +18,16 @@ class KartuKeluarga extends Model
 
     protected $table = 'kartu_keluarga';
 
-    protected $fillable = ['no_kk', 'status_ekonomi'];
+    protected $fillable = ['no_kk', 'status_dtks'];
 
     protected $casts = [
         'anggota_keluarga' => 'array',
         'tanah_keluarga' => 'array',
     ];
 
-    static $status_ekonomi = [
-        'mampu' => 'Mampu',
-        'tidak_mampu' => 'Tidak Mampu'
+    static $status_dtks = [
+        'tidak_terdaftar' => 'Tidak Terdaftar',
+        'terdaftar' => 'Terdaftar'
     ];
 
     public function anggota_keluarga(): HasMany

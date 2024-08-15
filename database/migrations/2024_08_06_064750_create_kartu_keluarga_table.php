@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('no_kk', 16)->unique();
             $table->string('image')->nullable();
-            $table->enum('status_ekonomi',['mampu','tidak mampu'])->default('mampu');
+            $table->enum('status_dtks',['tidak terdaftar','terdaftar'])->default('mampu');
             $table->timestamps();
         });
     }
