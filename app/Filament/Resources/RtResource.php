@@ -54,7 +54,6 @@ class RtResource extends Resource
                     ->label('Kepala RT')
                     ->native(false)
                     ->searchable()
-                    ->required()
                     ->preload()
             ])
             ->columns(1);
