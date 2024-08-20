@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DukuhResource\Pages;
-use App\Filament\Resources\DukuhResource\RelationManagers;
+use App\Filament\Resources\DusunResource\Pages;
+use App\Filament\Resources\DusunResource\RelationManagers;
 use App\Models\Dusun;
 use Filament\Forms;
 use Filament\Forms\Components\Select;

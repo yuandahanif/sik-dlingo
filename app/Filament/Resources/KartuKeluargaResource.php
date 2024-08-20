@@ -47,13 +47,10 @@ class KartuKeluargaResource extends Resource
                     ->length(16)
                     ->autocomplete('off')
                     ->required(),
-                Select::make('status_ekonomi')
-                    ->label('Status Ekonomi')
+                Select::make('status_dtks')
+                    ->label('Status DTKS')
                     ->native(false)
-                    ->options([
-                        'mampu' => 'Mampu',
-                        'tidak_mampu' => 'Tidak Mampu',
-                    ])
+                    ->options(KartuKeluarga::$status_dtks)
                     ->required(),
                 Repeater::make('anggota_keluarga')
                     ->relationship()

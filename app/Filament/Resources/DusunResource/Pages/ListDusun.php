@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\DukuhResource\Pages;
+namespace App\Filament\Resources\DusunResource\Pages;
 
 use App\Filament\Resources\DusunResource;
 use Filament\Actions;
