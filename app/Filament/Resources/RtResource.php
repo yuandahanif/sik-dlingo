@@ -74,6 +74,9 @@ class RtResource extends Resource
                 TextColumn::make('kepala.nama')
                     ->searchable()
                     ->label('Kepala RT'),
+                TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Database ID'),
                 TextColumn::make('penduduk_count')->counts('penduduk')
                     ->label('Jumlah Penduduk')
                     ->sortable()

@@ -118,8 +118,8 @@ class KartuKeluargaResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('no_kk')
                             ->label('Nomer KK'),
-                        Infolists\Components\TextEntry::make('status_ekonomi')
-                            ->label('Status Ekonomi'),
+                        Infolists\Components\TextEntry::make('status_dtks')
+                            ->label('Status DTKS'),
                         Infolists\Components\RepeatableEntry::make('anggota_keluarga_belong')
                             ->label('Anggota Keluarga')
                             ->columnSpanFull()

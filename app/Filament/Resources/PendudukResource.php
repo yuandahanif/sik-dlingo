@@ -32,6 +32,8 @@ use Illuminate\Support\Carbon;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 
+use function Laravel\Prompts\table;
+
 class PendudukResource extends Resource
 {
     protected static ?string $model = Penduduk::class;
@@ -46,13 +48,20 @@ class PendudukResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nik')->unique(fn(string $operation) => $operation == 'create')->label('NIK')->autocomplete('off')->required()->live()
-                    ->disabled(fn(string $operation) => $operation == 'edit')
+                TextInput::make('nik')->disabled(fn(string $operation) => $operation == 'edit')->unique(table: Penduduk::class, column: 'nik', ignoreRecord: true)->label('NIK')->autocomplete('off')->required()->live()
                     ->validationMessages([
                         'unique' => 'NIK sudah ada.',
                     ]),
                 TextInput::make('nama')->label('Nama')->autocomplete('off')->required(),
-                Select::make('rt_id')->relationship('rt', 'nama')->native(false)->preload()->searchable()->required(),
+                Select::make('rt_id')->relationship('rt', 'nama')->options(function () {
+                    $kv = [];
+                    $rts = Rt::with(['dusun'])->get();
+                    foreach ($rts as $key => $value) {
+                        $kv[$value->id] = $value->dusun->nama . ' - ' . $value->nama;
+                    }
+
+                    return $kv;
+                })->native(false)->preload()->searchable()->required(),
                 Select::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->native(false)->required(),
                 TextInput::make('tempat_lahir')->label('Tempat Lahir')->required(),
                 DatePicker::make('tanggal_lahir')->label('Tanggal Lahir')->native(false)->locale('id')->maxDate(now())->required(),
@@ -76,7 +85,7 @@ class PendudukResource extends Resource
                         TextInput::make('lowest_age')->numeric()->label('Batas Bawah')->prefix('Batas Bawah')->minValue(0)
                             ->maxValue(
                                 function (Get $get): Int {
-                                    $highest_age = $get('highest_age') ?? 150;
+                                    $highest_age = (int) $get('highest_age') ?? 150;
                                     return $highest_age;
                                 }
                             )
@@ -85,7 +94,7 @@ class PendudukResource extends Resource
                         TextInput::make('highest_age')->numeric()->label('Batas Atas')->suffix('Batas Atas')->maxValue(150)
                             ->minValue(
                                 function (Get $get): Int {
-                                    $lowest_age = $get('lowest_age') ?? 0;
+                                    $lowest_age =  (int) $get('lowest_age') ?? 0;
                                     return $lowest_age;
                                 }
                             )
@@ -98,11 +107,11 @@ class PendudukResource extends Resource
                 return $query
                     ->when(
                         isset($data['lowest_age']),
-                        fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '<=', Carbon::now()->subYears($date)),
+                        fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '<=', Carbon::now()->subYears($data['lowest_age'])),
                     )
                     ->when(
                         isset($data['highest_age']),
-                        fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '>=', Carbon::now()->subYears($date)),
+                        fn(Builder $query, $date): Builder => $query->whereDate('tanggal_lahir', '>=', Carbon::now()->subYears($data['highest_age'])),
                     );
             })->columnSpanFull();
 
@@ -187,6 +196,29 @@ class PendudukResource extends Resource
                         Infolists\Components\TextEntry::make('pekerjaan')->label('Pekerjaan'),
                         Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')->default('-'),
                         Infolists\Components\TextEntry::make('status')->label('Status'),
+                    ]),
+                Infolists\Components\Fieldset::make('Orang Tua')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('ayah')
+                            ->label('Ayah Kandung')
+                            ->contained(false)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('nama')
+                                    ->listWithLineBreaks()
+                                    ->label('')
+                                    ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
+
+                            ]),
+                        Infolists\Components\RepeatableEntry::make('ibu')
+                            ->label('Ibu Kandung')
+                            ->contained(false)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('nama')
+                                    ->listWithLineBreaks()
+                                    ->label('')
+                                    ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
+
+                            ]),
                     ]),
                 Infolists\Components\Fieldset::make('Anak')
                     ->schema([
