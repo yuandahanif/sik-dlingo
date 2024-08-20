@@ -8,10 +8,18 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use HasRoles;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@dlingo-desa.my.id');
+    }
 
     /**
      * The attributes that are mass assignable.
