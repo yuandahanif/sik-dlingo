@@ -43,7 +43,6 @@ class DusunResource extends Resource
                     ->label('Ketua Dusun')
                     ->native(false)
                     ->searchable()
-                    ->required()
                     ->preload(),
             ]);
     }
