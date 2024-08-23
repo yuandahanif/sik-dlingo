@@ -14,6 +14,8 @@ class AgeDistributionChart extends ChartWidget
 
     protected static ?string $maxHeight = '300px';
 
+    protected static ?int $sort = 3;
+
     protected function getData(): array
     {
         $currentDate = Carbon::now();
@@ -26,7 +28,7 @@ class AgeDistributionChart extends ChartWidget
         ];
 
         foreach (Penduduk::all() as $penduduk) {
-            $age = $currentDate->diffInYears(Carbon::parse($penduduk->tanggal_lahir));
+            $age = Carbon::parse($penduduk->tanggal_lahir)->diffInYears($currentDate);
 
             if ($age < 5) {
                 $ageDistribution['Bayi dan Balita']++;
