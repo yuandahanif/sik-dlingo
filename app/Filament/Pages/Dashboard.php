@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Filament\Resources\PendudukResource\Widgets\DateOfBirthChart;
 use App\Filament\Resources\PendudukResource\Widgets\GenderDistributionChart;
+use App\Filament\Resources\PendudukResource\Widgets\AgeDistributionChart;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
@@ -30,6 +31,7 @@ class Dashboard extends BaseDashboard
         return [
             DateOfBirthChart::class,
             GenderDistributionChart::class,
+            AgeDistributionChart::class,
         ];
     }
 
