@@ -28,7 +28,7 @@ class DusunResource extends Resource
     protected static ?int $navigationSort = 3;
 
     protected static ?string $slug = 'dusun';
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -38,9 +38,9 @@ class DusunResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Select::make('kepala_id')
+                    ->native(false)
                     ->relationship(name: 'kepala', titleAttribute: 'nama')
                     ->label('Ketua Dusun')
-                    ->native(false)
                     ->searchable()
                     ->preload(),
             ]);

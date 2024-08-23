@@ -25,7 +25,7 @@ class Rt extends Model
 
     public function penduduk(): HasMany
     {
-        return $this->hasMany(Penduduk::class);
+        return $this->hasMany(Penduduk::class, 'rt_id', 'id');
     }
 
     public function dusun(): BelongsTo

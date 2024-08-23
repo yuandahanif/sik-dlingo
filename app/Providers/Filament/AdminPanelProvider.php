@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Resources\PendudukResource\Widgets\DateOfBirthChart;
 use App\Filament\Resources\PendudukResource\Widgets\GenderDistributionChart;
 use App\Filament\Resources\PendudukResource\Widgets\AgeDistributionChart;
+use App\Filament\Resources\PendudukResource\Widgets\PersebaranPenduduk;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -12,7 +13,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -20,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Widgets;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -36,13 +37,14 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                // Pages\Dashboard::class,
+                Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 DateOfBirthChart::class,
-                GenderDistributionChart::class, 
+                GenderDistributionChart::class,
                 AgeDistributionChart::class,
+                PersebaranPenduduk::class,
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])

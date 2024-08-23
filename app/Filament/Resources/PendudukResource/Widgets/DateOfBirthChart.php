@@ -7,6 +7,8 @@ use Filament\Actions\Action;
 use Filament\Widgets\ChartWidget;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\On;
 
 class DateOfBirthChart extends ChartWidget
 {
@@ -14,33 +16,34 @@ class DateOfBirthChart extends ChartWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    protected static ?int $sort = 2;
+
     protected static ?string $maxHeight = '300px';
 
+    public Carbon $fromDate;
+    public Carbon $toDate;
 
-    protected function getHeaderActions(): array
+    #[On('updateFromDate')]
+    public function updateFromDate(string $from): void
     {
-        return [
-            Action::make('updateAuthor')
-                ->label('Update Author')
-                ->form([
-                    Select::make('authorId')
-                        ->label('Author')
-                        // ->options(User::query()->pluck('name', 'id'))
-                        ->required(),
-                ])
-                // ->action(function (array $data, Post $record): void {
-                //     $record->author()->associate($data['authorId']);
-                //     $record->save();
-                // })
-        ];
+        $this->fromDate = Carbon::parse($from);
+        $this->updateChartData();
     }
-
-
+    #[On('updateToDate')]
+    public function updateToDate(string $to): void
+    {
+        $this->toDate = Carbon::parse($to);
+        $this->updateChartData();
+    }
 
     protected function getData(): array
     {
+        $fromDate = $this->fromDate ?? now()->subYears(10);
+        $toDate = $this->toDate ?? now();
+
         $years_of_birth = Penduduk::query()
             ->selectRaw('YEAR(tanggal_lahir) as year')
+            ->whereBetween('tanggal_lahir', [$fromDate, $toDate])
             ->groupBy('year')
             ->orderBy('year')
             ->pluck('year')
@@ -48,6 +51,7 @@ class DateOfBirthChart extends ChartWidget
 
         $years_of_birth_count = Penduduk::query()
             ->selectRaw('YEAR(tanggal_lahir) as year, COUNT(*) as count')
+            ->whereBetween('tanggal_lahir', [$fromDate, $toDate])
             ->groupBy('year')
             ->orderBy('year')
             ->pluck('count')
@@ -55,6 +59,7 @@ class DateOfBirthChart extends ChartWidget
 
         $years_of_death = Penduduk::query()
             ->selectRaw('YEAR(tanggal_meninggal) as year')
+            ->whereBetween('tanggal_lahir', [$fromDate, $toDate])
             ->groupBy('year')
             ->orderBy('year')
             ->pluck('year')
@@ -72,7 +77,7 @@ class DateOfBirthChart extends ChartWidget
                 [
                     'borderColor' => 'red',
                     'color' => 'red',
-                    'label' => 'Jumlah Kematian',
+                    'label' => 'Jumlah Meninggal',
                     'data' => $years_of_death,
                 ],
             ],

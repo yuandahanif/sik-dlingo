@@ -26,7 +26,7 @@ class KartuKeluarga extends Model
     ];
 
     static $status_dtks = [
-        'tidak_terdaftar' => 'Tidak Terdaftar',
+        'tidak terdaftar' => 'Tidak Terdaftar',
         'terdaftar' => 'Terdaftar'
     ];
 

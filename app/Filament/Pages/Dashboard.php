@@ -14,27 +14,6 @@ use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 
 class Dashboard extends BaseDashboard
 {
-    use HasFiltersAction;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            FilterAction::make('stat_filter')
-                ->form([
-                    DatePicker::make('startDate'),
-                    DatePicker::make('endDate'),
-                ]),
-        ];
-    }
-    public function widget(): array
-    {
-        return [
-            DateOfBirthChart::class,
-            GenderDistributionChart::class,
-            AgeDistributionChart::class,
-        ];
-    }
-
     public function getColumns(): int | string | array
     {
         return 2;

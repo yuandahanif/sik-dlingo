@@ -9,9 +9,12 @@ class GenderDistributionChart extends ChartWidget
 {
     protected static ?string $heading = 'Distribusi Penduduk Berdasarkan Jenis Kelamin';
 
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 1;
+
+    protected static ?int $sort = 2;
 
     protected static ?string $maxHeight = '300px';
+
 
     protected function getData(): array
     {
@@ -21,17 +24,17 @@ class GenderDistributionChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'data' => [$maleCount, $femaleCount], 
-                    'backgroundColor' => ['blue', 'pink'], 
+                    'data' => [$maleCount, $femaleCount],
+                    'backgroundColor' => ['blue', 'pink'],
                     'label' => 'Jumlah Penduduk',
                 ],
             ],
-            'labels' => ['Laki-laki', 'Perempuan'], 
+            'labels' => ['Laki-laki', 'Perempuan'],
         ];
     }
 
     protected function getType(): string
     {
-        return 'pie'; 
+        return 'pie';
     }
 }
