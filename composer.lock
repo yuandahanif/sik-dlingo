@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2143c4b3b5e36f7ba3a8c87e6085ce79",
+    "content-hash": "0e5af5a9eb6129ef6c704d697143975e",
     "packages": [
         {
             "name": "3x1io/filament-user",
