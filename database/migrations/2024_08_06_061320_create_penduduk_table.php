@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('pekerjaan');
             $table->enum('status_kependudukan', ['pindah', 'datang'])->nullable();
             $table->enum('status', ['hidup', 'meninggal'])->default('hidup');
-            $table->enum('agama',['islam','katolik','protestan','konghucu','buddha','hindu']);
+            $table->enum('agama',['islam','katholik','protestan','konghucu','buddha','hindu']);
             $table->enum('status_pernikahan',['kawin','belum kawin','cerai', 'cerai mati'])->default('belum kawin');
             $table->date('tanggal_meninggal')->nullable();
             $table->timestamps();

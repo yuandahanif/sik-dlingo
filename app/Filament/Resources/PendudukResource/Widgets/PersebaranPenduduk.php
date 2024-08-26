@@ -36,6 +36,7 @@ class PersebaranPenduduk extends ChartWidget
         return [
             'datasets' => [
                 [
+                    'backgroundColor' => ['lime', 'salmon', 'skyblue', 'yellow', 'purple', 'orange', 'brown', 'black'],
                     'data' => $count_penduduk_per_dusun,
                 ],
             ],

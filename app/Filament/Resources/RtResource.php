@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RtResource\Pages;
 use App\Filament\Resources\RtResource\RelationManagers;
+use App\Models\Penduduk;
 use App\Models\Rt;
 use Filament\Actions\Action;
 use Filament\Forms;
@@ -19,7 +20,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Columns\Column;
 
 class RtResource extends Resource
 {
