@@ -6,11 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "3x1io/filament-user": "^1.1",
         "andreiio/blade-iconoir": "^4.4",
         "andreiio/blade-remix-icon": "^3.3",
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-game-icons": "^1.4",
         "filament/filament": "^3.2",
+        "joaopaulolndev/filament-edit-profile": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "owenvoke/blade-fontawesome": "^2.6",
