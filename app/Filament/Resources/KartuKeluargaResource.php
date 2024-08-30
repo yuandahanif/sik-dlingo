@@ -95,6 +95,16 @@ class KartuKeluargaResource extends Resource
                 TextColumn::make('bantuan_count')->counts('bantuan')->label('Jumlah Bantuan')
                     ->sortable()
                     ->alignCenter(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('status_ekonomi')->options(KartuKeluarga::$status_dtks)->label('Status DTKS')->native(false)->columnSpan(1),

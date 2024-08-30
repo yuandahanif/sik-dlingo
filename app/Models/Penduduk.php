@@ -91,10 +91,17 @@ class Penduduk extends Model
         );
     }
 
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => ucfirst($value),
+        );
+    }
+
     protected function tempatTanggalLahir(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $this->tempat_lahir . ', ' . Carbon::parse($this->tanggal_lahir)->locale('id')->format('d F Y'),
+            get: fn(mixed $value, array $attributes) => $this->tempat_lahir . ', ' . Carbon::parse($this->tanggal_lahir)->format('d F Y'),
         );
     }
 

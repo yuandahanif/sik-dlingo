@@ -108,14 +108,16 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->label(trans('filament-user::user.resource.email_verified_at')),
-                TextColumn::make('created_at')
-                    ->label(trans('filament-user::user.resource.created_at'))
-                    ->dateTime('M j, Y')
-                    ->sortable(),
-                TextColumn::make('updated_at')
-                    ->label(trans('filament-user::user.resource.updated_at'))
-                    ->dateTime('M j, Y')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\Filter::make('verified')

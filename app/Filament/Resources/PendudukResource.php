@@ -31,11 +31,10 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Get;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Arr;
 
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-
-use Illuminate\Support\Arr;
 
 class PendudukResource extends Resource
 {
@@ -99,7 +98,7 @@ class PendudukResource extends Resource
                                     return $highest_age;
                                 }
                             )
-                            ->debounce(1000)
+                            ->debounce(3000)
                             ->live(),
                         TextInput::make('highest_age')->numeric()->label('Batas Atas')->suffix('Batas Atas')->maxValue(150)
                             ->minValue(
@@ -108,7 +107,7 @@ class PendudukResource extends Resource
                                     return $lowest_age;
                                 }
                             )
-                            ->debounce(1000)
+                            ->debounce(3000)
                             ->live(),
 
                     ])->columns(2),
@@ -171,6 +170,16 @@ class PendudukResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->alignCenter(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 $ageFilter,
@@ -202,7 +211,8 @@ class PendudukResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('nik')->label('NIK'),
                         Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga.no_kk')->label('No. KK')
-                            ->url(fn(Penduduk $record): string => route(ViewKartuKeluarga::getRouteName(), ['record' => $record?->kartu_keluarga?->kartu_keluarga ?? '#'])),
+                            ->default('-')
+                            ->url(fn(Penduduk $record): string => $record?->kartu_keluarga?->kartu_keluarga ? route(ViewKartuKeluarga::getRouteName(), ['record' => $record?->kartu_keluarga?->kartu_keluarga ?? '#']) : ''),
                         Infolists\Components\TextEntry::make('nama'),
                         Infolists\Components\TextEntry::make('alamat')->state(function (Penduduk $record): string {
                             return 'RT ' . $record->rt->rt . ', ' . $record->alamat;
@@ -218,8 +228,20 @@ class PendudukResource extends Resource
                         Infolists\Components\TextEntry::make('status')->label('Status'),
                         Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga')->label('Status Dalam keluarga')
                             ->state(function (Penduduk $record): string {
-                                return KartuKeluargaPenduduk::$status_dalam_keluarga[$record->kartu_keluarga->status_dalam_keluarga];
+                                return $record?->kartu_keluarga?->status_dalam_keluarga != "" ? KartuKeluargaPenduduk::$status_dalam_keluarga[$record?->kartu_keluarga?->status_dalam_keluarga] : "-";
                             }),
+                    ]),
+                Infolists\Components\Fieldset::make('Asuransi')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('asuransi')
+                            ->label('')
+                            ->contained(false)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('kategori.nama')
+                                    ->listWithLineBreaks()
+                                    ->label(''),
+
+                            ]),
                     ]),
                 Infolists\Components\Fieldset::make('Orang Tua')
                     ->schema([

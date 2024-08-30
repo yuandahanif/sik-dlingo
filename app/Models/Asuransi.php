@@ -21,7 +21,7 @@ class Asuransi extends Model
 
     public function pemilik(): BelongsTo
     {
-        return $this->belongsTo(Penduduk::class, 'penduduk_id');
+        return $this->belongsTo(Penduduk::class);
     }
 
     public function kategori(): BelongsTo
