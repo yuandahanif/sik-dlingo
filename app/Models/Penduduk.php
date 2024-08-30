@@ -60,9 +60,9 @@ class Penduduk extends Model
     ];
 
     static $status_kependudukan = [
-        'pindah' => 'Pindah',
-        'datang' => 'Datang',
-        'null' => 'menetap'
+        'pindah' => 'Pindah keluar',
+        'datang' => 'Pindah Masuk',
+        'null' => 'Menetap'
     ];
 
     static $status_pernikahan = [
@@ -80,20 +80,14 @@ class Penduduk extends Model
     protected function nama(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => Str::upper($value),
+            get: fn(string $value) => Str::upper($value),
+            set: fn(string $value) => Str::upper($value),
         );
     }
     protected function agama(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-        );
-    }
-
-    protected function status_kependudukan(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
+            get: fn(string $value) => ucfirst($value),
         );
     }
 

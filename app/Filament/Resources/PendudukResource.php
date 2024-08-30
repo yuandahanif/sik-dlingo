@@ -35,7 +35,7 @@ use Illuminate\Support\Carbon;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 
-use function Laravel\Prompts\table;
+use Illuminate\Support\Arr;
 
 class PendudukResource extends Resource
 {
@@ -51,7 +51,15 @@ class PendudukResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nik')->disabled(fn(string $operation) => $operation == 'edit')->unique(table: Penduduk::class, column: 'nik', ignoreRecord: true)->label('NIK')->autocomplete('off')->required()->live()
+                TextInput::make('nik')
+                    ->disabled(fn(string $operation) => $operation == 'edit')
+                    ->unique(table: Penduduk::class, column: 'nik', ignoreRecord: true)
+                    ->label('NIK')
+                    ->numeric()
+                    ->length(16)
+                    ->autocomplete('off')
+                    ->required()
+                    ->live()
                     ->validationMessages([
                         'unique' => 'NIK sudah ada.',
                     ]),
@@ -62,18 +70,17 @@ class PendudukResource extends Resource
                     foreach ($rts as $key => $value) {
                         $kv[$value->id] = $value->dusun->nama . ' - ' . $value->nama;
                     }
-
                     return $kv;
                 })->native(false)->preload()->searchable()->required(),
                 Select::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->native(false)->required(),
                 TextInput::make('tempat_lahir')->label('Tempat Lahir')->required(),
                 DatePicker::make('tanggal_lahir')->label('Tanggal Lahir')->native(false)->locale('id')->maxDate(now())->required(),
-                Select::make('agama')->options(Penduduk::$agama)->required(),
+                Select::make('agama')->options(Penduduk::$agama)->required()->native(false),
                 Textarea::make('alamat')->required(),
-                Select::make('status_pernikahan')->options(Penduduk::$status_pernikahan)->required(),
+                Select::make('status_pernikahan')->native(false)->options(Penduduk::$status_pernikahan)->required(),
                 TextInput::make('pekerjaan')->label('Pekerjaan')->required(),
-                Select::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->live()->default(null),
-                Select::make('status')->options(Penduduk::$status)->default('hidup')->required()->live(),
+                Select::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->native(false)->live()->default(null),
+                Select::make('status')->options(Penduduk::$status)->native(false)->default('hidup')->required()->live(),
                 DatePicker::make('tanggal_meninggal')->label('Tanggal meninggal')->native(false)->locale('id')->maxDate(now())->visible(fn(Get $get) => $get('status') == 'meninggal')->live(),
             ]);
     }
@@ -203,7 +210,11 @@ class PendudukResource extends Resource
                         Infolists\Components\TextEntry::make('tempat_tanggal_lahir')->label('Tempat/Tanggal lahir'),
                         Infolists\Components\TextEntry::make('agama')->label('Agama'),
                         Infolists\Components\TextEntry::make('pekerjaan')->label('Pekerjaan'),
-                        Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')->default('Menetap'),
+                        Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')
+                            ->state(
+                                fn(Penduduk $record) =>
+                                is_null($record->status_kependudukan) ? Penduduk::$status_kependudukan['null'] : Penduduk::$status_kependudukan[$record->status_kependudukan]
+                            ),
                         Infolists\Components\TextEntry::make('status')->label('Status'),
                         Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga')->label('Status Dalam keluarga')
                             ->state(function (Penduduk $record): string {
