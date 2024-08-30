@@ -231,18 +231,6 @@ class PendudukResource extends Resource
                                 return $record?->kartu_keluarga?->status_dalam_keluarga != "" ? KartuKeluargaPenduduk::$status_dalam_keluarga[$record?->kartu_keluarga?->status_dalam_keluarga] : "-";
                             }),
                     ]),
-                Infolists\Components\Fieldset::make('Asuransi')
-                    ->schema([
-                        Infolists\Components\RepeatableEntry::make('asuransi')
-                            ->label('')
-                            ->contained(false)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('kategori.nama')
-                                    ->listWithLineBreaks()
-                                    ->label(''),
-
-                            ]),
-                    ]),
                 Infolists\Components\Fieldset::make('Orang Tua')
                     ->schema([
                         Infolists\Components\RepeatableEntry::make('ayah')
@@ -253,7 +241,6 @@ class PendudukResource extends Resource
                                     ->listWithLineBreaks()
                                     ->label('')
                                     ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
-
                             ]),
                         Infolists\Components\RepeatableEntry::make('ibu')
                             ->label('Ibu Kandung')
@@ -276,6 +263,29 @@ class PendudukResource extends Resource
                                     ->label('')
                                     ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
 
+                            ]),
+                    ]),
+                Infolists\Components\Fieldset::make('Asuransi')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('asuransi')
+                            ->label('')
+                            ->contained(false)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('kategori.nama')
+                                    ->listWithLineBreaks()
+                                    ->label(''),
+
+                            ]),
+                    ]),
+                Infolists\Components\Fieldset::make('Pertanahan')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('tanah')
+                            ->label('')
+                            ->contained(false)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('tipe_sertifikat')
+                                    ->listWithLineBreaks()
+                                    ->label(''),
                             ]),
                     ]),
             ]);

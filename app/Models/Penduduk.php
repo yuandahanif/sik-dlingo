@@ -105,6 +105,13 @@ class Penduduk extends Model
         );
     }
 
+    protected function age(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Carbon::parse($this->tanggal_lahir)->age,
+        );
+    }
+
     public function kartu_keluarga(): BelongsTo
     {
         return $this->belongsTo(KartuKeluargaPenduduk::class, "id", "penduduk_id",);
@@ -168,12 +175,5 @@ class Penduduk extends Model
     public function bantuan(): HasMany
     {
         return $this->hasMany(BantuanPenduduk::class, 'penduduk_id');
-    }
-
-    protected function age(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => Carbon::parse($this->tanggal_lahir)->age,
-        );
     }
 }

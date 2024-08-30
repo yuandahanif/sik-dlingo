@@ -65,6 +65,11 @@ class DusunResource extends Resource
                     ->label('Jumlah RT')
                     ->sortable()
                     ->alignCenter(),
+                TextColumn::make('penduduk_count')->counts('penduduk')
+                    ->label('Jumlah Penduduk')
+                    ->sortable()
+                    ->toggleable()
+                    ->alignCenter(),
                 TextColumn::make('kepala.nama')->label('Ketua Dusun'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
