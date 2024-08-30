@@ -71,7 +71,7 @@ class KartuKeluargaResource extends Resource
                         Select::make('status_dalam_keluarga')
                             ->label('Status Dalam Keluarga')
                             ->required()
-                            ->options(KartuKeluargaPenduduk::status_dalam_keluarga())
+                            ->options(KartuKeluargaPenduduk::$status_dalam_keluarga)
                             ->native(false),
                     ])
                     ->columns(2)

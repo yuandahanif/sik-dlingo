@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DusunResource\Pages;
 use App\Filament\Resources\DusunResource\RelationManagers;
 use App\Models\Dusun;
+use App\Models\Penduduk;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -42,6 +43,15 @@ class DusunResource extends Resource
                     ->relationship(name: 'kepala', titleAttribute: 'nama')
                     ->label('Ketua Dusun')
                     ->searchable()
+                    ->options(function () {
+                        $kv = [];
+                        $penduduk = Penduduk::get(['nik', 'nama', 'id']);
+                        foreach ($penduduk as $key => $value) {
+                            $kv[$value->id] = $value->nik . ' - ' . $value->nama;
+                        }
+
+                        return $kv;
+                    })
                     ->preload(),
             ]);
     }

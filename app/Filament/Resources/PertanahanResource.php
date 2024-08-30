@@ -32,6 +32,15 @@ class PertanahanResource extends Resource
             ->schema([
                 Forms\Components\Select::make('penduduk_id')
                     ->relationship(name: 'pemilik', titleAttribute: 'nama')
+                    ->options(function () {
+                        $kv = [];
+                        $penduduk = Penduduk::get(['nik', 'nama', 'id']);
+                        foreach ($penduduk as $key => $value) {
+                            $kv[$value->id] = $value->nik . ' - ' . $value->nama;
+                        }
+
+                        return $kv;
+                    })
                     ->native(false)
                     ->preload()
                     ->searchable()

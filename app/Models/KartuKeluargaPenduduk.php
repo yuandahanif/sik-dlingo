@@ -18,15 +18,13 @@ class KartuKeluargaPenduduk extends Model
 
     protected $fillable = ["penduduk_id", 'kartu_keluarga_id', 'status_dalam_keluarga'];
 
-    static function status_dalam_keluarga(): array
-    {
-        return [
-            'suami' => 'suami',
-            'istri' => 'istri',
-            'anak' => 'anak',
-            'lainnya' => 'lainnya'
-        ];
-    }
+    static $status_dalam_keluarga = [
+        'kepala keluarga' => 'Kepala Keluarga',
+        'suami' => 'Suami',
+        'istri' => 'Istri',
+        'anak' => 'Anak',
+        'lainnya' => 'Lainnya'
+    ];
 
     public function penduduk(): HasOne
     {

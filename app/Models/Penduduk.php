@@ -20,7 +20,8 @@ use App\Models\Pertanahan;
 use App\Models\RiwayatKependudukan;
 use App\Models\PohonKeluarga;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Str;
+
+use Illuminate\Support\Str;
 
 class Penduduk extends Model
 {
@@ -75,6 +76,26 @@ class Penduduk extends Model
         'hidup' => 'Hidup',
         'meninggal' => 'Meninggal'
     ];
+
+    protected function nama(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Str::upper($value),
+        );
+    }
+    protected function agama(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+        );
+    }
+
+    protected function status_kependudukan(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+        );
+    }
 
     protected function tempatTanggalLahir(): Attribute
     {

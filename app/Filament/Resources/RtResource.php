@@ -54,6 +54,15 @@ class RtResource extends Resource
                     ->preload(),
                 Select::make('kepala_id')
                     ->relationship(name: 'kepala', titleAttribute: 'nama')
+                    ->options(function () {
+                        $kv = [];
+                        $penduduk = Penduduk::get(['nik', 'nama', 'id']);
+                        foreach ($penduduk as $key => $value) {
+                            $kv[$value->id] = $value->nik . ' - ' . $value->nama;
+                        }
+
+                        return $kv;
+                    })
                     ->label('Kepala RT')
                     ->native(false)
                     ->searchable()

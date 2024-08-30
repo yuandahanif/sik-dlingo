@@ -12,6 +12,7 @@
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-game-icons": "^1.4",
         "filament/filament": "^3.2",
+        "filament/notifications": "^3.2",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",

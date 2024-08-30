@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\PendudukExporter;
 use App\Filament\Resources\KartuKeluargaResource\Pages\ViewKartuKeluarga;
 use App\Filament\Resources\PendudukResource\Pages;
 use App\Filament\Resources\PendudukResource\Pages\ViewPenduduk;
 use App\Filament\Resources\PendudukResource\RelationManagers;
 use App\Models\Dusun;
+use App\Models\KartuKeluargaPenduduk;
 use App\Models\Penduduk;
 use App\Models\Rt;
 use Filament\Forms\Components\DatePicker;
@@ -18,6 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -146,6 +149,10 @@ class PendudukResource extends Resource
             })->columnSpanFull();
 
         return $table
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(PendudukExporter::class)
+            ])
             ->columns([
                 TextColumn::make('nik')->searchable()->label('NIK'),
                 TextColumn::make('nama')->searchable(),
@@ -173,7 +180,7 @@ class PendudukResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
             ])
             ->filtersFormWidth(MaxWidth::TwoExtraLarge)
             ->filtersFormColumns(2);
@@ -190,12 +197,18 @@ class PendudukResource extends Resource
                         Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga.no_kk')->label('No. KK')
                             ->url(fn(Penduduk $record): string => route(ViewKartuKeluarga::getRouteName(), ['record' => $record?->kartu_keluarga?->kartu_keluarga ?? '#'])),
                         Infolists\Components\TextEntry::make('nama'),
-                        Infolists\Components\TextEntry::make('alamat'),
+                        Infolists\Components\TextEntry::make('alamat')->state(function (Penduduk $record): string {
+                            return 'RT ' . $record->rt->rt . ', ' . $record->alamat;
+                        }),
                         Infolists\Components\TextEntry::make('tempat_tanggal_lahir')->label('Tempat/Tanggal lahir'),
                         Infolists\Components\TextEntry::make('agama')->label('Agama'),
                         Infolists\Components\TextEntry::make('pekerjaan')->label('Pekerjaan'),
-                        Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')->default('-'),
+                        Infolists\Components\TextEntry::make('status_kependudukan')->label('Status Kependudukan')->default('Menetap'),
                         Infolists\Components\TextEntry::make('status')->label('Status'),
+                        Infolists\Components\TextEntry::make('kartu_keluarga.kartu_keluarga')->label('Status Dalam keluarga')
+                            ->state(function (Penduduk $record): string {
+                                return KartuKeluargaPenduduk::$status_dalam_keluarga[$record->kartu_keluarga->status_dalam_keluarga];
+                            }),
                     ]),
                 Infolists\Components\Fieldset::make('Orang Tua')
                     ->schema([
@@ -217,7 +230,6 @@ class PendudukResource extends Resource
                                     ->listWithLineBreaks()
                                     ->label('')
                                     ->url(fn(Penduduk $record): string => route(ViewPenduduk::getRouteName(), ['record' => $record->id])),
-
                             ]),
                     ]),
                 Infolists\Components\Fieldset::make('Anak')
