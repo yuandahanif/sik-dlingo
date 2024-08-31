@@ -33,8 +33,8 @@ class PendudukExporter extends Exporter
             ExportColumn::make('tanggal_meninggal'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('no_kk'),
-            ExportColumn::make('status_dtks'),
+            ExportColumn::make('kartu_keluarga.kartu_keluarga.no_kk')->label('No. KK'),
+            ExportColumn::make('kartu_keluarga.kartu_keluarga.status_dtks')->label('Status DTKS'),
         ];
     }
 

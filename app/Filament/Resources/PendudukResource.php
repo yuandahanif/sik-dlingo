@@ -12,7 +12,6 @@ use App\Models\KartuKeluargaPenduduk;
 use App\Models\Penduduk;
 use App\Models\Rt;
 use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -31,10 +30,12 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Get;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Arr;
 
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 
 class PendudukResource extends Resource
 {
@@ -91,6 +92,13 @@ class PendudukResource extends Resource
 
     public static function table(Table $table): Table
     {
+
+        $kkFilter =
+            QueryBuilder::make('kk_filter')
+            ->constraints([
+                TextConstraint::make('kartu_keluarga.kartu_keluarga.no_kk')->label('Nomer Kartu Keluarga'),
+            ]);
+
         $ageFilter =
             Filter::make('age')
             ->form([
@@ -194,6 +202,7 @@ class PendudukResource extends Resource
                 SelectFilter::make('status')->options(Penduduk::$status)->label('Status')->native(false)->columnSpan(1),
                 SelectFilter::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->label('Status Kependudukan')->native(false)->columnSpan(1),
                 $dusunFilter,
+                $kkFilter,
             ], layout: FiltersLayout::Modal)
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -205,7 +214,8 @@ class PendudukResource extends Resource
                 ])
             ])
             ->filtersFormWidth(MaxWidth::TwoExtraLarge)
-            ->filtersFormColumns(2);
+            ->filtersFormColumns(2)
+            ->deferFilters();
     }
 
 
