@@ -91,6 +91,7 @@ class UserResource extends Resource
     {
         !config('filament-user.impersonate') ?: $table->actions([Impersonate::make('impersonate')]);
         $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('id')
                     ->sortable()

@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Number;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         config(['app.locale' => 'id']);
+        Number::useLocale($this->app->getLocale());
         Carbon::setLocale('id');
     }
 }

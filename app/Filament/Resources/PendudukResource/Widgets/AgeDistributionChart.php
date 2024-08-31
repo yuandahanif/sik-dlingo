@@ -20,26 +20,26 @@ class AgeDistributionChart extends ChartWidget
     {
         $currentDate = Carbon::now();
         $ageDistribution = [
-            'Bayi dan Balita' => 0,
-            'Anak-anak' => 0,
-            'Remaja' => 0,
-            'Dewasa' => 0,
-            'Lansia' => 0,
+            'Bayi dan Balita (0-5)' => 0,
+            'Anak-anak (6-9)' => 0,
+            'Remaja (10-18)' => 0,
+            'Dewasa (19-59)' => 0,
+            'Lansia (60++)' => 0,
         ];
 
         foreach (Penduduk::all() as $penduduk) {
             $age = Carbon::parse($penduduk->tanggal_lahir)->diffInYears($currentDate);
 
             if ($age < 5) {
-                $ageDistribution['Bayi dan Balita']++;
+                $ageDistribution['Bayi dan Balita (0-5)']++;
             } elseif ($age <= 9) {
-                $ageDistribution['Anak-anak']++;
+                $ageDistribution['Anak-anak (6-9)']++;
             } elseif ($age <= 18) {
-                $ageDistribution['Remaja']++;
+                $ageDistribution['Remaja (10-18)']++;
             } elseif ($age <= 59) {
-                $ageDistribution['Dewasa']++;
+                $ageDistribution['Dewasa (19-59)']++;
             } else {
-                $ageDistribution['Lansia']++;
+                $ageDistribution['Lansia (60++)']++;
             }
         }
 

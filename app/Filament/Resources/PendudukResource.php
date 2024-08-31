@@ -46,42 +46,47 @@ class PendudukResource extends Resource
 
     protected static ?string $slug = 'penduduk';
 
+    public static function getCreateForm(): array
+    {
+        return [
+            TextInput::make('nik')
+                ->disabled(fn(string $operation) => $operation == 'edit')
+                ->unique(table: Penduduk::class, column: 'nik', ignoreRecord: true)
+                ->label('NIK')
+                ->numeric()
+                ->length(16)
+                ->autocomplete('off')
+                ->required()
+                ->live()
+                ->validationMessages([
+                    'unique' => 'NIK sudah ada.',
+                ]),
+            TextInput::make('nama')->label('Nama')->autocomplete('off')->required(),
+            Select::make('rt_id')->relationship('rt', 'nama')->options(function () {
+                $kv = [];
+                $rts = Rt::with(['dusun'])->get();
+                foreach ($rts as $key => $value) {
+                    $kv[$value->id] = $value->dusun->nama . ' - ' . $value->nama;
+                }
+                return $kv;
+            })->native(false)->preload()->searchable()->required(),
+            Select::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->native(false)->required(),
+            TextInput::make('tempat_lahir')->label('Tempat Lahir')->required(),
+            DatePicker::make('tanggal_lahir')->label('Tanggal Lahir')->native(false)->locale('id')->maxDate(now())->required(),
+            Select::make('agama')->options(Penduduk::$agama)->required()->native(false),
+            Textarea::make('alamat')->required(),
+            Select::make('status_pernikahan')->native(false)->options(Penduduk::$status_pernikahan)->required(),
+            TextInput::make('pekerjaan')->label('Pekerjaan')->required(),
+            Select::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->native(false)->live()->default(null),
+            Select::make('status')->options(Penduduk::$status)->native(false)->default('hidup')->required()->live(),
+            DatePicker::make('tanggal_meninggal')->label('Tanggal meninggal')->native(false)->locale('id')->maxDate(now())->visible(fn(Get $get) => $get('status') == 'meninggal')->live(),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('nik')
-                    ->disabled(fn(string $operation) => $operation == 'edit')
-                    ->unique(table: Penduduk::class, column: 'nik', ignoreRecord: true)
-                    ->label('NIK')
-                    ->numeric()
-                    ->length(16)
-                    ->autocomplete('off')
-                    ->required()
-                    ->live()
-                    ->validationMessages([
-                        'unique' => 'NIK sudah ada.',
-                    ]),
-                TextInput::make('nama')->label('Nama')->autocomplete('off')->required(),
-                Select::make('rt_id')->relationship('rt', 'nama')->options(function () {
-                    $kv = [];
-                    $rts = Rt::with(['dusun'])->get();
-                    foreach ($rts as $key => $value) {
-                        $kv[$value->id] = $value->dusun->nama . ' - ' . $value->nama;
-                    }
-                    return $kv;
-                })->native(false)->preload()->searchable()->required(),
-                Select::make('jenis_kelamin')->options(Penduduk::$jenis_kelamin)->native(false)->required(),
-                TextInput::make('tempat_lahir')->label('Tempat Lahir')->required(),
-                DatePicker::make('tanggal_lahir')->label('Tanggal Lahir')->native(false)->locale('id')->maxDate(now())->required(),
-                Select::make('agama')->options(Penduduk::$agama)->required()->native(false),
-                Textarea::make('alamat')->required(),
-                Select::make('status_pernikahan')->native(false)->options(Penduduk::$status_pernikahan)->required(),
-                TextInput::make('pekerjaan')->label('Pekerjaan')->required(),
-                Select::make('status_kependudukan')->options(Penduduk::$status_kependudukan)->native(false)->live()->default(null),
-                Select::make('status')->options(Penduduk::$status)->native(false)->default('hidup')->required()->live(),
-                DatePicker::make('tanggal_meninggal')->label('Tanggal meninggal')->native(false)->locale('id')->maxDate(now())->visible(fn(Get $get) => $get('status') == 'meninggal')->live(),
-            ]);
+            ->schema(static::getCreateForm());
     }
 
     public static function table(Table $table): Table
@@ -159,6 +164,7 @@ class PendudukResource extends Resource
                 ExportAction::make()
                     ->exporter(PendudukExporter::class)
             ])
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('nik')->searchable()->label('NIK'),
                 TextColumn::make('nama')->searchable(),

@@ -60,6 +60,7 @@ class BantuanPendudukResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('penduduk.nama')->searchable()->label('Penerima Bantuan'),
                 TextColumn::make('kategori.nama')->sortable()->label('Kategori Bantuan'),

@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -20,8 +19,6 @@ use Filament\Forms\Components\Select;
 use App\Models\KartuKeluarga;
 use App\Models\KartuKeluargaPenduduk;
 use App\Models\Penduduk;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Filters\SelectFilter;
 
 use Filament\Infolists;
@@ -37,21 +34,28 @@ class KartuKeluargaResource extends Resource
 
     protected static ?string $slug = 'kartu-keluarga';
 
+    public static function getCreateForm(): array
+    {
+        return [
+            TextInput::make('no_kk')
+                ->label('Nomer KK')
+                ->length(16)
+                ->autocomplete('off')
+                ->required(),
+            Select::make('status_dtks')
+                ->label('Status DTKS')
+                ->native(false)
+                ->options(KartuKeluarga::$status_dtks)
+                ->required(),
+        ];
+    }
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('no_kk')
-                    ->label('Nomer KK')
-                    ->length(16)
-                    ->autocomplete('off')
-                    ->required(),
-                Select::make('status_dtks')
-                    ->label('Status DTKS')
-                    ->native(false)
-                    ->options(KartuKeluarga::$status_dtks)
-                    ->required(),
+                ...static::getCreateForm(),
                 Repeater::make('anggota_keluarga')
                     ->relationship()
                     ->schema([
@@ -82,6 +86,7 @@ class KartuKeluargaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('no_kk')->searchable()->label('Nomer KK'),
                 TextColumn::make('anggota_keluarga_count')->counts('anggota_keluarga')->label('Anggota KK')
