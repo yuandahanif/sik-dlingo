@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dusun', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->foreignId('ketua_id')->nullable()->references('id')->on('penduduk')->onDelete('cascade');
+            $table->foreignId('kepala_id')->nullable()->references('id')->on('penduduk')->onDelete('cascade');
             $table->timestamps();
         });
     }
