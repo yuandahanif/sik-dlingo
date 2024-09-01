@@ -17,9 +17,12 @@
 <body class="font-sans antialiased">
     <div class="bg-gray-50 text-black/50 flex h-screen w-screen justify-center items-center flex-col">
         <img id="background" class="w-[400px] h-auto" src="{{ asset('images/logo-bantul-sid.png') }}" />
-        <h1 class="text-2xl text-bold ">Kalurahan Dlingo Kapanewon Dlingo Kabupaten Bantul D.I.Yogyakarta Koripan 1, Dlingo,
-            Dlingo, Bantul.</h1>
+        <h1 class="text-2xl text-bold ">Sistem Informasi Kependudukan Kalurahan Dlingo</h1>
     </div>
+
+    {{-- <div>
+        @livewire(\App\Filament\Resources\PendudukResource\Widgets\AgeDistributionChart::class)
+    </div> --}}
 </body>
 
 </html>

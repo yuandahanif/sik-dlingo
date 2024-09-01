@@ -27,7 +27,7 @@ class AgeDistributionChart extends ChartWidget
             'Lansia (60++)' => 0,
         ];
 
-        foreach (Penduduk::all() as $penduduk) {
+        foreach (Penduduk::all(['tanggal_lahir']) as $penduduk) {
             $age = Carbon::parse($penduduk->tanggal_lahir)->diffInYears($currentDate);
 
             if ($age < 5) {
