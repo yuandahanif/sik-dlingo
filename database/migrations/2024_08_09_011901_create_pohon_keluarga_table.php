@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pohon_keluarga', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kk_id')->references('id')->on('kartu_keluarga')->onDelete('no action');
+            // $table->foreignId('kk_id')->references('id')->on('kartu_keluarga')->onDelete('no action');
             $table->foreignId('parent_id')->references('id')->on('penduduk')->onDelete('cascade');
             $table->foreignId('child_id')->references('id')->on('penduduk')->onDelete('cascade');
             $table->enum('hubungan', ['ayah', 'ibu']);

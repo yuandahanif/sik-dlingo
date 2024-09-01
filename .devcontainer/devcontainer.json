@@ -19,11 +19,14 @@
 		}
 	},
 	"remoteUser": "sail",
-	// "features": {
-	// 	"ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
-	// 		"plugins": ["zsh-syntax-highlighting", "zsh-autosuggestions"]
-	// 	}
-	// },
+	"features": {
+		"ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
+			"plugins": [
+				"zsh-syntax-highlighting",
+				"zsh-autosuggestions"
+			]
+		}
+	},
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true",
 	// "forwardPorts": [],
 	// "runServices": [],

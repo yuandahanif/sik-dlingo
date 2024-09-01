@@ -21,5 +21,12 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'password'=> bcrypt('12345678'),
         ]);
+
+        User::factory()->create([
+            'name' => 'Super Admin',
+            'email' => 'admin@dlingo-desa.my.id',
+            'role' => 'admin',
+            'password'=> bcrypt('admin_password'),
+        ]);
     }
 }

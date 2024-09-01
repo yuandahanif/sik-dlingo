@@ -11,10 +11,25 @@ class PohonKeluarga extends Model
 
     protected $table = 'pohon_keluarga';
 
-    protected $fillable = ['kk_id', 'parent_id', 'child_id', 'hubungan'];
+    protected $fillable = [ 'parent_id', 'child_id', 'hubungan'];
 
-    public function kartu_keluarga()
+    static $hubungan = [
+        'ayah' => 'Ayah',
+        'ibu' => 'Ibu'
+    ];
+
+    // public function kartu_keluarga()
+    // {
+    //     return $this->belongsTo(KartuKeluarga::class, 'kk_id');
+    // }
+
+    public function parent()
     {
-        return $this->belongsTo(KartuKeluarga::class, 'kk_id');
+        return $this->belongsTo(Penduduk::class, 'parent_id');
+    }
+
+    public function child()
+    {
+        return $this->belongsTo(Penduduk::class, 'child_id');
     }
 }

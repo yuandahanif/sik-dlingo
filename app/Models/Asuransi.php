@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\Models\Penduduk;
 use App\Models\KategoriAsuransi;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Asuransi extends Model
 {
@@ -18,13 +19,13 @@ class Asuransi extends Model
 
     protected $fillable = ['keterangan', 'nomor_asuransi', 'penduduk_id', 'kategori_id'];
 
-    public function Pemilik(): BelongsTo
+    public function pemilik(): BelongsTo
     {
-        return $this->belongsTo(Penduduk::class, 'penduduk_id');
+        return $this->belongsTo(Penduduk::class);
     }
 
-    public function kategori(): HasOne
+    public function kategori(): BelongsTo
     {
-        return $this->hasOne(KategoriAsuransi::class);
+        return $this->belongsTo(KategoriAsuransi::class);
     }
 }
