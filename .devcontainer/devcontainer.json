@@ -13,7 +13,9 @@
 				"amiralizadeh9480.laravel-extra-intellisense",
 				"ryannaddy.laravel-artisan",
 				"onecentlin.laravel5-snippets",
-				"onecentlin.laravel-blade"
+				"onecentlin.laravel-blade",
+				"bmewburn.vscode-intelephense-client",
+				"mhutchie.git-graph"
 			],
 			"settings": {}
 		}
@@ -28,7 +30,7 @@
 		}
 	},
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true",
-	// "forwardPorts": [],
+	// "forwardPorts": [8000, 5173]
 	// "runServices": [],
 	// "shutdownAction": "none",
 }

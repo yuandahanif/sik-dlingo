@@ -90,8 +90,22 @@ class PendudukResource extends Resource
             ->schema(static::getCreateForm());
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $is_super_admin = auth()->guard()->user()->hasRole('super_admin');
+        // list all penduduk record if super admin
+        if ($is_super_admin) {
+            return parent::getEloquentQuery();
+        } else {
+            // list all penduduk by dusun if not super admin
+            $dusun_ids = auth()->guard()->user()->dusun->pluck('id');
+            return parent::getEloquentQuery()->whereIn('rt_id', Rt::whereIn('dusun_id', $dusun_ids)->pluck('id'));
+        }
+    }
+
     public static function table(Table $table): Table
     {
+        $is_super_admin = auth()->guard()->user()->hasRole('super_admin');
 
         $kkFilter =
             QueryBuilder::make('kk_filter')
@@ -143,7 +157,7 @@ class PendudukResource extends Resource
                 Fieldset::make('Alamat')
                     ->schema([
                         Select::make('dusun')->label('Dusun')
-                            ->options(Dusun::pluck('nama', 'id'))
+                            ->options(fn() => $is_super_admin ? Dusun::pluck('nama', 'id') : auth()->guard()->user()->dusun->pluck('nama', 'id'))
                             ->preload()
                             ->debounce(1000)
                             ->native(false)

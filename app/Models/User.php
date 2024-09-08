@@ -11,6 +11,11 @@ use Spatie\Permission\Traits\HasRoles;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
+use App\Models\Dusun;
+use App\Models\UserDusun;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -55,5 +60,10 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function dusun(): BelongsToMany
+    {
+        return $this->belongsToMany(Dusun::class, 'user_dusun');
     }
 }

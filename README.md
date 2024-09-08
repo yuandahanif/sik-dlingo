@@ -7,6 +7,29 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+# Development
+
+## Installation
+```bash
+composer install
+npm install
+```
+
+## Setup sail
+```bash
+./vendor/bin/sail up
+```
+
+## Restore database
+Aside form using migration, you can also restore database from sql file.
+```bash
+mysql -u root --host=127.0.0.1 --port=3306 -v --init-command="SET SESSION FOREIGN_KEY_CHECKS=0" database_name < filename.sql
+```
+
+```bash
+php artisan serve
+```
+
 # Deployment
 compress
 ```bash
