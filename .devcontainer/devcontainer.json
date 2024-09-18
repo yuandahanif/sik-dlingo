@@ -13,7 +13,8 @@
 				"amiralizadeh9480.laravel-extra-intellisense",
 				"ryannaddy.laravel-artisan",
 				"onecentlin.laravel5-snippets",
-				"onecentlin.laravel-blade"
+				"onecentlin.laravel-blade",
+				"mhutchie.git-graph"
 			],
 			"settings": {}
 		}
@@ -27,6 +28,9 @@
 			]
 		}
 	},
+	"mounts": [
+		"type=bind,source=/home/${localEnv:USER}/.ssh,target=/root/.ssh,readonly"
+	],
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true",
 	// "forwardPorts": [],
 	// "runServices": [],
