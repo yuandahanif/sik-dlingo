@@ -72,6 +72,12 @@ class UserResource extends Resource
                         ? Hash::make($state)
                         : User::find($form->getColumns())?->password;
                 }),
+            Forms\Components\Select::make('dusun.nama')
+                ->multiple()
+                ->preload()
+                ->native(false)
+                ->relationship('dusun', 'nama')
+                ->label('Dusun')
         ];
 
         if (config('filament-user.shield')) {
@@ -104,11 +110,17 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->label(trans('filament-user::user.resource.email')),
+                TextColumn::make('dusun.nama')
+                    ->searchable()
+                    ->badge()
+                    ->separator(',')
+                    ->label('Dusun'),
                 IconColumn::make('email_verified_at')
                     ->boolean()
                     ->sortable()
                     ->searchable()
-                    ->label(trans('filament-user::user.resource.email_verified_at')),
+                    ->label(trans('filament-user::user.resource.email_verified_at'))
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime()

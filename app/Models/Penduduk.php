@@ -52,7 +52,7 @@ class Penduduk extends Model
 
     static $agama = [
         'islam' => 'Islam',
-        'katolik' => 'Katolik',
+        'katholik' => 'Katholik',
         'protestan' => 'Protestan',
         'konghucu' => 'Konghucu',
         'buddha' => 'Buddha',
